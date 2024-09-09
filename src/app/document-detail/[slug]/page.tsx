@@ -1,3 +1,5 @@
+'use client';
+import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
 export default function DocumentDetail() {
     return (
         <div className="max-w-[1200px] mx-auto mt-5">
@@ -5,6 +7,8 @@ export default function DocumentDetail() {
             <div className="flex justify-between items-center mb-5 mt-6">
                 <div className="flex items-center space-x-4 text-[#999999]">
                     <span>Ngày đăng: 07/09/2024</span>
+                    <span className="w-[1px] h-[20px] border border-gray-300"></span>
+                    <span>Dung lượng: 5.4 MB</span>
                     <span className="w-[1px] h-[20px] border border-gray-300"></span>
                     <p className="flex items-center gap-2">
                         Loại tài liệu:{' '}
@@ -36,13 +40,19 @@ export default function DocumentDetail() {
                     </li>
                 </ul>
             </div>
-            <div className="flex justify-end mb-5 gap-1">
-                <button className="px-5 py-[10px] bg-white border text-[#999] hover:bg-[#dd098c] hover:text-white">
-                    Thêm vào Bộ sưu tập
+            <div className="flex justify-between mb-5 gap-1">
+                <button className="px-5 py-[10px] bg-[#1877f2] rounded-md text-[#fff] flex items-center gap-3 hover:opacity-80">
+                    <FacebookRoundedIcon />
+                    Chia sẻ
                 </button>
-                <button className="px-5 py-[10px] bg-[#f8ab54] text-white text-[14px]  ml-4 hover:bg-[#c80]">
-                    TẢI XUỐNG
-                </button>
+                <div>
+                    <button className="px-5 py-[10px] bg-white border text-[#999] hover:bg-[#dd098c] hover:text-white">
+                        Thêm vào Bộ sưu tập
+                    </button>
+                    <button className="px-5 py-[10px] bg-[#f8ab54] text-white text-[14px]  ml-4 hover:bg-[#c80]">
+                        TẢI XUỐNG
+                    </button>
+                </div>
             </div>
             <embed
                 src="https://firebasestorage.googleapis.com/v0/b/baocaototnghiep-f9197.appspot.com/o/SPEAKING.pdf?alt=media&token=a6ba7e11-d6d8-4218-905d-2588a159f06b"
