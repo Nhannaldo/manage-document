@@ -1,113 +1,117 @@
-import Image from "next/image";
+import Image from 'next/image';
+import DocumentItem from '@/components/DocumentItem';
 
+const arrayDocs = [
+    {
+        pathimg:
+            'https://firebasestorage.googleapis.com/v0/b/baocaototnghiep-f9197.appspot.com/o/ngonnguC.jpg?alt=media&token=cd6bc268-3af4-41f6-894f-b52766edd9ef',
+        title: 'Ngôn ngữ lập trình C/C++: Chương 7: Dữ liệu kiểu tệp pdf',
+        date: '26/08/2024',
+        typedoc: 'PDF',
+        page: 12,
+        view: 657,
+        dowload: 32,
+    },
+    {
+        pathimg:
+            'https://firebasestorage.googleapis.com/v0/b/baocaototnghiep-f9197.appspot.com/o/quantrimang.jpg?alt=media&token=4cf805ee-2ad1-45f4-869d-09790bdbb45f',
+        title: 'Bài 1: Giới thiệu và cài đặt Windows server 2003 ppt',
+        date: '15/07/2024',
+        typedoc: 'PDF',
+        page: 45,
+        view: 1234,
+        dowload: 89,
+    },
+    {
+        pathimg:
+            'https://firebasestorage.googleapis.com/v0/b/baocaototnghiep-f9197.appspot.com/o/hethongthongtin.jpg?alt=media&token=8d8b1b20-5894-43a7-b3ca-ec7cc67d7fb8',
+        title: 'BÀI GIẢNG PHÁT TRIỂN HỆ THỐNG THÔNG TIN',
+        date: '10/06/2024',
+        typedoc: 'DOCX',
+        page: 34,
+        view: 789,
+        dowload: 58,
+    },
+    {
+        pathimg:
+            'https://firebasestorage.googleapis.com/v0/b/baocaototnghiep-f9197.appspot.com/o/test1.jpg?alt=media&token=5d0c5311-da8e-48da-a0bd-ad5e95bfc013',
+        title: 'Giáo trình Xây dựng web thương mại điện tử bằng Joomla',
+        date: '01/09/2024',
+        typedoc: 'PDF',
+        page: 25,
+        view: 902,
+        dowload: 67,
+    },
+    {
+        pathimg:
+            'https://firebasestorage.googleapis.com/v0/b/baocaototnghiep-f9197.appspot.com/o/hedieuhanh1.jpg?alt=media&token=eb6fd2ca-d344-4e63-99d4-1ba00fcc60f1',
+        title: 'Bài tập hệ điều hành',
+        date: '01/11/2024',
+        typedoc: 'DOCX',
+        page: 35,
+        view: 120,
+        dowload: 20,
+    },
+    {
+        pathimg:
+            'https://firebasestorage.googleapis.com/v0/b/baocaototnghiep-f9197.appspot.com/o/winCC.jpg?alt=media&token=2c50537e-5b11-40b5-a284-31313c107e59',
+        title: 'Tài liệu Giáo trình giảng dạy WinCC doc',
+        date: '13/10/2024',
+        typedoc: 'PDF',
+        page: 84,
+        view: 402,
+        dowload: 19,
+    },
+    {
+        pathimg:
+            'https://firebasestorage.googleapis.com/v0/b/baocaototnghiep-f9197.appspot.com/o/%C4%91atieutrinh.png?alt=media&token=8b7c2cff-a1ba-490c-b1f6-f5a4a63e43e1',
+        title: 'Đa tiểu trình một số khái niệm cơ bản',
+        date: '13/08/2024',
+        typedoc: 'PDF',
+        page: 42,
+        view: 1959,
+        dowload: 8,
+    },
+    {
+        pathimg:
+            'https://firebasestorage.googleapis.com/v0/b/baocaototnghiep-f9197.appspot.com/o/xaydungwebsite.jpg?alt=media&token=622d70cf-4b94-4774-a1ec-c80d4b390096',
+        title: 'Giáo trình Hệ điều hành Linux cơ bản Chương 11',
+        date: '29/07/2024',
+        typedoc: 'PDF',
+        page: 28,
+        view: 1401,
+        dowload: 14,
+    },
+];
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    return (
+        <div className="py-6 px-[170px]">
+            <div className="grid ">
+                <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-[18px] font-bold text-[#006ec7]">
+                        TÀI LIỆU MỚI
+                    </h2>
+                    <span className="text-[#2259a2]">Xem tất cả </span>
+                </div>
+                <ul className="grid grid-cols-4 gap-[24px] h-[]">
+                    {arrayDocs.map((item, index) => (
+                        <li
+                            className="bg-[#fff] border border-[#ececec] hover:translate-y-[-4px]"
+                            key={index}
+                        >
+                            <DocumentItem
+                                pathimg={item.pathimg}
+                                title={item.title}
+                                date={item.date}
+                                typedoc={item.typedoc}
+                                page={item.page}
+                                view={item.view}
+                                dowload={item.dowload}
+                            />
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
-      </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+    );
 }
