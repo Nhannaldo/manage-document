@@ -5,6 +5,7 @@ import MessageIcon from '@mui/icons-material/Message';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import UploadIcon from '@mui/icons-material/Upload';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 interface AccountMenuProps {
     anchorEl: HTMLElement | null;
@@ -19,6 +20,27 @@ const AccountMenu: React.FC<AccountMenuProps> = ({
     onClose,
     menuId,
 }) => {
+    const router = useRouter();
+
+    const handleLogout = async () => {
+        try {
+            const response = await fetch('http://localhost:3001/auth/logout', {
+                method: 'POST',
+                credentials: 'include', // Quan trọng để gửi cookie cùng với yêu cầu
+            });
+
+            if (response.ok) {
+                // Điều hướng người dùng về trang đăng nhập sau khi đăng xuất thành công
+                console.log('đăng xuất thành công');
+
+                router.push('/login');
+            } else {
+                console.error('Đăng xuất thất bại:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Lỗi trong quá trình đăng xuất:', error);
+        }
+    };
     return (
         <Menu
             anchorEl={anchorEl}
@@ -90,7 +112,7 @@ const AccountMenu: React.FC<AccountMenuProps> = ({
             </MenuItem>
             <Divider />
 
-            <MenuItem onClick={onClose}>
+            <MenuItem onClick={handleLogout}>
                 <ListItemIcon>
                     <Logout fontSize="small" />
                 </ListItemIcon>

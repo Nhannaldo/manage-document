@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-
+import { UserProvider } from '@/context/UserContext';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -17,13 +17,21 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="vi">
             <body className={inter.className}>
-                <Header />
+                {/* <Header />
                 <div className="pt-[67.2px] pb-[24px] bg-[#f8f8f8]">
                     {children}
                 </div>
-                <Footer />
+                <Footer /> */}
+
+                <UserProvider>
+                    <Header />
+                    <div className="pt-[67.2px] pb-[24px] bg-[#f8f8f8]">
+                        {children}
+                    </div>
+                    <Footer />
+                </UserProvider>
             </body>
         </html>
     );
