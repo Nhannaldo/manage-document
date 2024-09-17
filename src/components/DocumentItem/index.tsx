@@ -11,6 +11,7 @@ interface IDocItem {
     view: number;
     dowload: number;
 }
+
 export default function DocumentItem(props: IDocItem) {
     const { pathimg, title, date, typedoc, page, view, dowload } = props;
     return (
@@ -29,16 +30,29 @@ export default function DocumentItem(props: IDocItem) {
                         className="border border-gray-300 rounded h-full"
                     />
                 </div>
-                <div className="mt-3 text-[#333] h-[48px]">{title}</div>
+                <div
+                    className="mt-3 text-[#333] h-[48px] overflow-hidden"
+                    style={{
+                        display: '-webkit-box',
+                        WebkitBoxOrient: 'vertical',
+                        WebkitLineClamp: 2, // Số dòng muốn hiển thị
+                    }}
+                    title={title}
+                >
+                    {title}
+                </div>
             </a>
             <div className="text-[13px] text-[#717171] mt-4">
-                {/* <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1">
-                        <HistoryIcon fontSize="small" />
-                        {date}
-                    </div>
-                    <span>Loại tài liệu: {typedoc}</span>
-                </div> */}
+                <div className="flex items-center justify-between">
+                    {date && (
+                        <div className="flex items-center gap-1">
+                            <HistoryIcon fontSize="small" />
+                            {date}
+                        </div>
+                    )}
+                    {typedoc && <span>Loại tài liệu: {typedoc}</span>}
+                </div>
+
                 <div className="flex items-center mt-4 justify-end gap-2 text-[#999]">
                     <span className="flex items-end gap-1">
                         <DescriptionOutlinedIcon

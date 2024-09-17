@@ -7,7 +7,13 @@ type Category = {
     checked: boolean;
 };
 
-export default function FilterCategory() {
+interface FilterCategoryProps {
+    onFilterChange: (selectedCategories: string[]) => void;
+}
+
+export default function FilterCategory({
+    onFilterChange,
+}: FilterCategoryProps) {
     const [categories, setCategories] = useState<Category[]>([
         { name: 'Lập trình cơ bản', count: 10, checked: false },
         { name: 'Cấu trúc dữ liệu và giải thuật', count: 0, checked: false },
@@ -30,6 +36,9 @@ export default function FilterCategory() {
         const newCategories = [...categories];
         newCategories[index].checked = !newCategories[index].checked;
         setCategories(newCategories);
+        onFilterChange(
+            newCategories.filter((cat) => cat.checked).map((cat) => cat.name),
+        ); // Notify parent about the selected categories
     };
 
     return (
