@@ -1,7 +1,20 @@
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-export default function SearchResultItem() {
+
+interface SearchResultItemProps {
+    result: {
+        title: string;
+        description: string;
+        fileType: string; // e.g., PDF, DOC, etc.
+        uploadedAt: string;
+        views: number;
+        downloads: number;
+        pagenumber: number;
+        imageUrl: string; // Thumbnail URL for document preview
+    };
+}
+export default function SearchResultItem({ result }: SearchResultItemProps) {
     return (
         <div
             className="p-4 rounded-md bg-[#fff] mb-4"
@@ -16,23 +29,19 @@ export default function SearchResultItem() {
                         PDF
                     </span>
                     <img
-                        src="https://firebasestorage.googleapis.com/v0/b/baocaototnghiep-f9197.appspot.com/o/quantrimang.jpg?alt=media&token=4cf805ee-2ad1-45f4-869d-09790bdbb45f"
+                        src={result.imageUrl}
                         alt="ảnh tài liệu"
                         className="rounded-md border border-[#e5e7eb]"
                     />
                 </div>
                 <div className="flex-[6]">
                     <a href="" className="text-[20px] font-[600]">
-                        Kế toán quản trị eg33
+                        {result.title}
                     </a>
-                    <p className="mt-2">
-                        Thông tin thích hợp Chi phí trong kế toán quản trị sử
-                        dụng trên khía cạnh nào.. Nhiều Chi phí gốc trong định
-                        giá bán thông thường theo biến phí toàn bộ gồm: a.. Biến
-                        phí toàn bộ Chi phí
-                    </p>
+                    <p className="mt-2">{result.description}</p>
                     <p className="text-[#717171] text-[14px] mt-[10px]">
-                        Ngày đăng tải tài liệu: 06/09/2024
+                        Ngày đăng tải tài liệu:{' '}
+                        {new Date(result.uploadedAt).toLocaleDateString()}
                     </p>
 
                     <div className="text-[14px] text-[#717171] mt-3">
@@ -42,18 +51,18 @@ export default function SearchResultItem() {
                                     fontSize="small"
                                     className="relative top-[-2px]"
                                 />
-                                18
+                                {result.pagenumber}
                             </span>
                             <span className="flex items-center gap-1">
                                 <RemoveRedEyeOutlinedIcon fontSize="small" />
-                                20
+                                {result.views}
                             </span>
                             <span className="flex items-center gap-1">
                                 <SaveAltIcon
                                     fontSize="small"
                                     className="relative top-[-2px]"
                                 />
-                                1
+                                {result.downloads}
                             </span>
                             <button className="px-3 py-1 bg-[#f8ab54] text-white text-[14px] rounded-md ml-4">
                                 TẢI XUỐNG
