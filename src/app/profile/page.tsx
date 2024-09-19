@@ -67,8 +67,8 @@ export default function Profile() {
     return (
         <>
             <div>
-                <div className="bg-[blue] w-full h-[100px]"></div>
-                <div className="bg-white w-full h-[70px] flex px-[120px] relative">
+                <div className="bg-[#ddd] w-full h-[100px]"></div>
+                <div className="bg-white w-full h-[70px] flex px-[120px] relative border-b border-[#e0e0e0]">
                     <div className="flex items-center gap-3">
                         <div className="relative bottom-[50%]">
                             <Avatar
@@ -86,38 +86,38 @@ export default function Profile() {
                     <div></div>
                 </div>
                 <div className="mx-[10%] grid grid-cols-[20%_80%] mt-8 gap-3">
-                    <ul className="bg-[#fff] overflow-hidden min-h-20">
+                    <ul className="overflow-hidden min-h-20">
                         <li className="">
                             <a
                                 href=""
-                                className="text-[#999999] flex items-center gap-2 py-3 px-2.5 border border-gray-200"
+                                className="text-[#999999] flex items-center gap-2 py-2.5 px-3 border border-gray-200 rounded bg-[#fff] hover:bg-[#00a888] hover:text-[#fff]"
                             >
                                 <AccountCircleOutlinedIcon />
                                 Thông tin cá nhân
                             </a>
                         </li>
-                        <li className="">
+                        <li className="mt-2">
                             <a
                                 href=""
-                                className="text-[#999999] flex items-center gap-2 py-3 px-2.5 border border-gray-200"
+                                className="text-[#999999] flex items-center gap-2 py-2.5 px-3 border border-gray-200 rounded bg-[#fff] hover:bg-[#00a888] hover:text-[#fff]"
                             >
                                 <ArticleOutlinedIcon />
                                 Quản lý tài liệu
                             </a>
                         </li>
-                        <li className="">
+                        <li className="mt-2">
                             <a
                                 href=""
-                                className="text-[#999999] flex items-center gap-2 py-3 px-2.5 border border-gray-200"
+                                className="text-[#999999] flex items-center gap-2 py-2.5 px-3 border border-gray-200 rounded bg-[#fff] hover:bg-[#00a888] hover:text-[#fff]"
                             >
                                 <ChatOutlinedIcon />
                                 Quản lý hộp thư
                             </a>
                         </li>
-                        <li className="">
+                        <li className="mt-2">
                             <a
                                 href=""
-                                className="text-[#999999] flex items-center gap-2 py-3 px-2.5 border border-gray-200"
+                                className="text-[#999999] flex items-center gap-2 py-2.5 px-3 border border-gray-200 rounded bg-[#fff] hover:bg-[#00a888] hover:text-[#fff]"
                             >
                                 <NotificationsNoneOutlinedIcon />
                                 Thông báo
@@ -125,7 +125,13 @@ export default function Profile() {
                         </li>
                     </ul>
 
-                    <div className="bg-white rounded p-4">
+                    <div
+                        className="bg-white rounded p-4"
+                        style={{
+                            boxShadow:
+                                '0 1px 3px 0 rgb(0 0 0 / .1), 0 1px 2px -1px rgb(0 0 0 / .1)',
+                        }}
+                    >
                         <div className="flex items-center justify-between border-b border-gray-200 pb-3">
                             <h2 className="text-[24px] ">Thông tin cá nhân</h2>
                             <div
