@@ -5,9 +5,12 @@ import UpgradeOutlinedIcon from '@mui/icons-material/UpgradeOutlined';
 import { useState } from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
+import dynamic from 'next/dynamic';
+import 'react-quill/dist/quill.snow.css';
+
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+// import ReactQuill from 'react-quill';
 export default function Upload() {
     const [age, setAge] = useState('');
     const [editorContent, setEditorContent] = useState('');
@@ -34,19 +37,9 @@ export default function Upload() {
                         <li className="mb-4">
                             <label className="block">Nội dung tài liệu</label>
                             <div className="ckeditor-container">
-                                <CKEditor
-                                    editor={ClassicEditor}
-                                    data="<p>Hello from CKEditor 5!</p>"
-                                    onChange={(event, editor) => {
-                                        const data = editor.getData();
-                                        console.log({ event, editor, data });
-                                    }}
-                                    onBlur={(event, editor) => {
-                                        console.log('Blur.', editor);
-                                    }}
-                                    onFocus={(event, editor) => {
-                                        console.log('Focus.', editor);
-                                    }}
+                                <ReactQuill
+                                    value={editorContent}
+                                    onChange={setEditorContent}
                                 />
                             </div>
                         </li>
