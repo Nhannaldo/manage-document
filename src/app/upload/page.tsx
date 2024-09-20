@@ -6,8 +6,11 @@ import { useState, useRef } from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
+import { PDFDocument } from 'pdf-lib';
+
 //text editor
 import dynamic from 'next/dynamic';
+
 import 'react-quill/dist/quill.snow.css';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -71,9 +74,14 @@ export default function Upload() {
                 const data = await response.json();
                 setFileUrl(data.secure_url);
 
-                // Tính số trang
-                // const pdf = await pdfjs.getDocument(file).promise;
-                // setNumberOfPages(pdf.numPages);
+                // Đảm bảo xử lý PDF chỉ trên client-side
+                const reader = new FileReader();
+                reader.onload = async function () {
+                    const arrayBuffer = reader.result as ArrayBuffer;
+                    const pdfDoc = await PDFDocument.load(arrayBuffer); // Tải PDF từ ArrayBuffer
+                    setNumberOfPages(pdfDoc.getPageCount()); // Lấy số trang
+                };
+                reader.readAsArrayBuffer(file);
             } catch (error) {
                 console.error('Error uploading file:', error);
             }
@@ -82,6 +90,9 @@ export default function Upload() {
     const openFileDialog = () => {
         fileImageInputRef.current?.click(); // Mở dialog chọn file
     };
+
+    console.log('Page:', numberOfPages);
+
     return (
         <div className="max-w-[960px] mx-auto mt-6">
             <div className="p-4 bg-[#fff] rounded-md border border-[#eee]">
@@ -227,6 +238,7 @@ export default function Upload() {
                                 type="number"
                                 placeholder="0"
                                 disabled
+                                value={numberOfPages}
                             />
                         </li>
                         <li className="mb-4 flex items-center gap-1">
