@@ -2,11 +2,15 @@
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import UpgradeOutlinedIcon from '@mui/icons-material/UpgradeOutlined';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
+
+import { useRouter } from 'next/navigation';
 
 import { PDFDocument } from 'pdf-lib';
+//user
+import { useUser } from '@/context/UserContext';
 
 //text editor
 import dynamic from 'next/dynamic';
@@ -16,13 +20,27 @@ const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 const cloudName = 'drakdfels';
 const uploadPreset = 'upload_image';
-export default function Upload() {
-    const [age, setAge] = useState('');
-    const [editorContent, setEditorContent] = useState('');
-    const handleChange = (event: SelectChangeEvent) => {
-        setAge(event.target.value as string);
-    };
 
+interface Category {
+    _id: string;
+    name: string;
+}
+interface TypeFile {
+    _id: string;
+    name: string;
+}
+
+interface Subject {
+    _id: string;
+    name: string;
+}
+
+export default function Upload() {
+    const { user } = useUser();
+    const router = useRouter();
+
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
     const [imageUrl, setImageUrl] = useState('');
     const [fileUrl, setFileUrl] = useState('');
     const fileImageInputRef = useRef<HTMLInputElement | null>(null);
@@ -93,6 +111,116 @@ export default function Upload() {
 
     console.log('Page:', numberOfPages);
 
+    //useEffect
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [typefiles, setTypeFiles] = useState<TypeFile[]>([]);
+    const [subjects, setSubjects] = useState<Subject[]>([]);
+    const [selectedCategory, setSelectedCategory] = useState<string>('');
+    const [selectedTypeFile, setSelectedTypeFile] = useState<string>('');
+    const [selectedSubject, setSelectedSubject] = useState<string>('');
+
+    useEffect(() => {
+        async function fetchCategories() {
+            try {
+                const response = await fetch(
+                    'http://localhost:3001/category/get-all-category',
+                ); // Replace with your actual API endpoint
+                const data = await response.json();
+                setCategories(data); // Store categories in state
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        }
+        async function fetchTypefiles() {
+            try {
+                const response = await fetch(
+                    'http://localhost:3001/typefile/get-all-typefile',
+                ); // Replace with your actual API endpoint
+                const data = await response.json();
+                setTypeFiles(data); // Store categories in state
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        }
+        async function fetchSubjects() {
+            try {
+                const response = await fetch(
+                    'http://localhost:3001/subject/get-all-subject',
+                ); // Replace with your actual API endpoint
+                const data = await response.json();
+                setSubjects(data); // Store categories in state
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        }
+
+        fetchCategories();
+        fetchTypefiles();
+        fetchSubjects();
+    }, []);
+
+    // Hàm loại bỏ các thẻ HTML và trả về văn bản thuần
+    const handleDescriptionChange = (value: string) => {
+        setDescription(value); // Lưu giá trị thuần vào state
+    };
+    // Hàm để lấy văn bản thuần khi gửi
+    const getPlainText = () => {
+        return description.replace(/<\/?[^>]+(>|$)/g, ''); // Loại bỏ tất cả các thẻ HTML
+    };
+
+    //handle submit
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const newDoc = {
+            title,
+            description: getPlainText(),
+            categoryId: selectedCategory,
+            subjectId: selectedSubject,
+            fileUrl,
+            imageUrl,
+            typefileId: selectedTypeFile,
+            pagenumber: numberOfPages,
+            uploadedBy: user._id,
+        };
+
+        // Kiểm tra các giá trị trước khi gọi API
+        console.log(newDoc); // Thêm dòng này để kiểm tra các giá trị
+        try {
+            // Gửi yêu cầu tới API /api/register
+            const response = await fetch(
+                'http://localhost:3001/documents/create-new-document',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newDoc),
+                },
+            );
+
+            // Kiểm tra xem yêu cầu có thành công không
+            if (response.ok) {
+                alert('Upload tài liệu thành công!');
+                router.push('/'); // Chuyển hướng người dùng tới trang login
+            } else {
+                const data = await response.json();
+                alert(`Lỗi upload: ${data.message || 'Đã xảy ra lỗi'}`);
+            }
+        } catch (error) {
+            console.error('Lỗi kết nối tới API:', error);
+            alert('Đã xảy ra lỗi khi đăng ký.');
+        }
+    };
+    console.log('user:', user._id);
+
+    console.log('description:', description);
+    console.log('category:', categories);
+    console.log('selectcategory:', selectedCategory);
+    console.log('typefile:', typefiles);
+    console.log('selecttypefile:', selectedTypeFile);
+    console.log('subject:', subjects);
+    console.log('selectsubject:', selectedSubject);
+
     return (
         <div className="max-w-[960px] mx-auto mt-6">
             <div className="p-4 bg-[#fff] rounded-md border border-[#eee]">
@@ -108,15 +236,18 @@ export default function Upload() {
                                 size="small"
                                 className="w-full my-1"
                                 placeholder="Nhập tên tài liệu"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
                             />
                         </li>
                         <li className="mb-4">
                             <label className="block">Nội dung tài liệu</label>
                             <div className="h-[200px]">
                                 <ReactQuill
-                                    value={editorContent}
-                                    onChange={setEditorContent}
+                                    value={description}
+                                    onChange={handleDescriptionChange}
                                     className="h-[80%]"
+                                    style={{ direction: 'ltr' }}
                                 />
                             </div>
                         </li>
@@ -178,33 +309,47 @@ export default function Upload() {
                         <li className="mb-4">
                             <label className="block">Danh mục tài liệu</label>
                             <Select
-                                value={age}
-                                onChange={handleChange}
+                                value={selectedCategory}
+                                onChange={(e) =>
+                                    setSelectedCategory(e.target.value)
+                                }
                                 size="small"
                                 className="w-full my-1"
                                 MenuProps={{
                                     disableScrollLock: true,
                                 }}
                             >
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
+                                {categories.map((category) => (
+                                    <MenuItem
+                                        key={category._id}
+                                        value={category._id}
+                                    >
+                                        {category.name}
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </li>
                         <li className="mb-4">
                             <label className="block">Thuộc môn</label>
                             <Select
-                                value={age}
-                                onChange={handleChange}
+                                value={selectedSubject}
+                                onChange={(e) =>
+                                    setSelectedSubject(e.target.value)
+                                }
                                 size="small"
                                 className="w-full my-1"
                                 MenuProps={{
                                     disableScrollLock: true,
                                 }}
                             >
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
+                                {subjects.map((subject) => (
+                                    <MenuItem
+                                        key={subject._id}
+                                        value={subject._id}
+                                    >
+                                        {subject.name}
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </li>
                         <li className="mb-4">
@@ -241,6 +386,29 @@ export default function Upload() {
                                 value={numberOfPages}
                             />
                         </li>
+                        <li className="mb-4">
+                            <label className="block">Loại file</label>
+                            <Select
+                                value={selectedTypeFile}
+                                onChange={(e) =>
+                                    setSelectedTypeFile(e.target.value)
+                                }
+                                size="small"
+                                className="w-full my-1"
+                                MenuProps={{
+                                    disableScrollLock: true,
+                                }}
+                            >
+                                {typefiles.map((typefile) => (
+                                    <MenuItem
+                                        key={typefile._id}
+                                        value={typefile._id}
+                                    >
+                                        {typefile.name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </li>
                         <li className="mb-4 flex items-center gap-1">
                             <input type="checkbox" checked disabled />
                             <label className="block">
@@ -263,9 +431,11 @@ export default function Upload() {
                             <a href="">Trở về</a>
                         </Button>
                         <Button
+                            typeof="submit"
                             variant="contained"
                             type="submit"
                             sx={{ textTransform: 'none' }}
+                            onClick={handleSubmit}
                         >
                             Đăng tài liệu
                         </Button>
