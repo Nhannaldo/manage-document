@@ -63,14 +63,14 @@ export default function Search() {
                         : decodeURIComponent(slug)
                 }"`}
             </h1>
-            <div className="flex gap-4 mt-[32px]">
-                <div className="flex items-center gap-2">
+            <div className="flex flex-wrap gap-4 mt-[32px]">
+                <div className="flex items-center gap-2 bg-[#fff] px-4 py-2 rounded border">
                     <span>Danh mục</span>
                     <Select
                         value={age}
                         onChange={handleChange}
                         size="small"
-                        className="min-w-[140px]"
+                        className="min-w-[200px]"
                         MenuProps={{
                             disableScrollLock: true,
                         }}
@@ -83,7 +83,26 @@ export default function Search() {
                         <MenuItem value={30}>Thirty</MenuItem>
                     </Select>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 bg-[#fff] px-4 py-2 rounded border">
+                    <span>Môn</span>
+                    <Select
+                        value={age}
+                        onChange={handleChange}
+                        size="small"
+                        className="min-w-[220px]"
+                        MenuProps={{
+                            disableScrollLock: true,
+                        }}
+                    >
+                        <MenuItem value="">
+                            <em>None</em>
+                        </MenuItem>
+                        <MenuItem value={10}>Ten</MenuItem>
+                        <MenuItem value={20}>Twenty</MenuItem>
+                        <MenuItem value={30}>Thirty</MenuItem>
+                    </Select>
+                </div>
+                <div className="flex items-center gap-2 bg-[#fff] px-4 py-2 rounded border">
                     <span>Loại file</span>
                     <Select
                         value={age}
@@ -102,7 +121,7 @@ export default function Search() {
                         <MenuItem value={30}>Thirty</MenuItem>
                     </Select>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 bg-[#fff] px-4 py-2 rounded border">
                     <span>Độ dài</span>
                     <Select
                         value={age}
@@ -121,24 +140,22 @@ export default function Search() {
                         <MenuItem value={30}>Thirty</MenuItem>
                     </Select>
                 </div>
-                <div className="flex items-center gap-2">
-                    <span>Sắp xếp</span>
-                    <Select
-                        value={age}
-                        onChange={handleChange}
-                        size="small"
-                        className="min-w-[140px]"
-                        MenuProps={{
-                            disableScrollLock: true,
-                        }}
-                    >
-                        <MenuItem value="">
-                            <em>None</em>
-                        </MenuItem>
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
+                <div className="flex items-center gap-2 mt-3 ">
+                    <span className="mr-4 font-[600]">Sắp xếp:</span>
+                    <div className="flex items-center gap-[34px]">
+                        <label className="flex items-center">
+                            <input type="radio" />
+                            <span className="ml-2">Mới đăng</span>
+                        </label>
+                        <label className="flex items-center">
+                            <input type="radio" />
+                            <span className="ml-2">Tải nhiều</span>
+                        </label>
+                        <label className="flex items-center">
+                            <input type="radio" />
+                            <span className="ml-2">Xem nhiều</span>
+                        </label>
+                    </div>
                 </div>
             </div>
             {results.length > 0 ? (
