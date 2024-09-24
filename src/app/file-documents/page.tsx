@@ -9,13 +9,22 @@ import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 interface IDocumentItem {
-    imageUrl: string;
     title: string;
-    uploadedAt: string;
-    typedoc: string;
+    description?: string;
+    categoryId: string;
+    subjectId: string;
+    fileUrl: string;
+    imageUrl: string;
+    typefileId: string;
     pagenumber: number;
     views: number;
     downloads: number;
+    uploadedBy: string;
+    status: boolean;
+    sharedBy?: string[];
+    uploadedAt?: Date;
+    approvedAt?: Date;
+    hidden?: boolean;
 }
 
 export default function Document() {
@@ -151,13 +160,7 @@ export default function Document() {
                             className="bg-[#fff] border border-[#ececec] hover:translate-y-[-4px]"
                             key={index}
                         >
-                            <DocumentItem
-                                pathimg={item.imageUrl}
-                                title={item.title}
-                                page={item.pagenumber}
-                                view={item.views}
-                                dowload={item.downloads}
-                            />
+                            <DocumentItem props={item} />
                         </li>
                     ))}
                 </ul>

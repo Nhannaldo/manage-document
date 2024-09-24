@@ -1,4 +1,6 @@
-import Image from 'next/image';
+'use client';
+import { useState, useEffect } from 'react';
+
 import DocumentItem from '@/components/DocumentItem';
 
 const arrayDocs = [
@@ -83,7 +85,45 @@ const arrayDocs = [
         dowload: 14,
     },
 ];
+
+interface IDocumentItem {
+    title: string;
+    description?: string;
+    categoryId: string;
+    subjectId: string;
+    fileUrl: string;
+    imageUrl: string;
+    typefileId: string;
+    pagenumber: number;
+    views: number;
+    downloads: number;
+    uploadedBy: string;
+    status: boolean;
+    sharedBy?: string[];
+    uploadedAt?: Date;
+    approvedAt?: Date;
+    hidden?: boolean;
+}
 export default function Home() {
+    const [documents, setDocuments] = useState<IDocumentItem[]>([]);
+    useEffect(() => {
+        const fetchDocuments = async () => {
+            try {
+                const response = await fetch(
+                    `http://localhost:3001/documents/get-all-document`,
+                );
+                if (!response.ok) {
+                    throw new Error('Error fetching documents');
+                }
+                const data = await response.json();
+                setDocuments(data);
+            } catch (error) {
+                console.error('Error fetching documents:', error);
+            }
+        };
+
+        fetchDocuments();
+    }, []);
     return (
         <div className="py-6 px-[170px]">
             <div className="grid ">
@@ -94,22 +134,22 @@ export default function Home() {
                     <span className="text-[#2259a2]">Xem tất cả </span>
                 </div>
                 <ul className="grid grid-cols-4 gap-[24px] h-[]">
-                    {arrayDocs.map((item, index) => (
-                        <li
-                            className="bg-[#fff] border border-[#ececec] hover:translate-y-[-4px]"
-                            key={index}
-                        >
-                            <DocumentItem
-                                pathimg={item.pathimg}
-                                title={item.title}
-                                date={item.date}
-                                typedoc={item.typedoc}
-                                page={item.page}
-                                view={item.view}
-                                dowload={item.dowload}
-                            />
-                        </li>
-                    ))}
+                    {documents.map((item, index) => {
+                        // Add `hidden` dynamically before passing to the component
+                        const itemWithHidden = {
+                            ...item,
+                            hidden: true, // Example: hide if views are zero
+                        };
+
+                        return (
+                            <li
+                                className="bg-[#fff] border border-[#ececec] hover:translate-y-[-4px]"
+                                key={index}
+                            >
+                                <DocumentItem props={itemWithHidden} />
+                            </li>
+                        );
+                    })}
                 </ul>
             </div>
         </div>
