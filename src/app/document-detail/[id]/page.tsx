@@ -1,12 +1,61 @@
 'use client';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
+
+interface IDocumentPropItemDetail {
+    _id: string;
+    title: string;
+    description?: string;
+    categoryId: string;
+    subjectId: string;
+    fileUrl: string;
+    imageUrl: string;
+    typefileId: string;
+    pagenumber: number;
+    views: number;
+    downloads: number;
+    uploadedBy: string;
+    status: boolean;
+    sharedBy?: string[];
+    uploadedAt?: Date;
+    approvedAt?: Date;
+    hidden?: boolean;
+}
 export default function DocumentDetail() {
+    const { id } = useParams();
+
+    const [documentDetails, setDocumentDetails] =
+        useState<IDocumentPropItemDetail | null>(null);
+    const [pdfText, setPdfText] = useState<string | null>(null);
+
+    useEffect(() => {
+        // Fetch document data by ID from your API or backend
+        const fetchDocument = async () => {
+            if (id) {
+                const response = await fetch(
+                    `http://localhost:3001/documents/detail/${id}`,
+                ); // Your API to fetch document by ID
+                if (!response.ok) {
+                    throw new Error('Error fetching documents');
+                }
+                const data = await response.json();
+                setDocumentDetails(data);
+            }
+        };
+
+        fetchDocument();
+    }, [id]);
+
+    if (!documentDetails) {
+        return <div>Loading...</div>;
+    }
     return (
         <div className="max-w-[1200px] mx-auto mt-5">
-            <h1 className="text-[24px]">giáo trình ngôn ngữ lập trình perl</h1>
+            <h1 className="text-[24px]">{documentDetails.title}</h1>
             <div className="flex justify-between items-center mb-5 mt-6">
                 <div className="flex items-center space-x-4 text-[#999999]">
-                    <span>Ngày đăng: 07/09/2024</span>
+                    <span>Ngày đăng: 25/09/2024</span>
                     <span className="w-[1px] h-[20px] border border-gray-300"></span>
                     <span>Dung lượng: 5.4 MB</span>
                     <span className="w-[1px] h-[20px] border border-gray-300"></span>
@@ -22,21 +71,27 @@ export default function DocumentDetail() {
                         <span className="block font-bold uppercase text-gray-400 text-[12px]">
                             Số trang
                         </span>
-                        <span className="font-bold text-[red]">47</span>
+                        <span className="font-bold text-[red]">
+                            {documentDetails.pagenumber}
+                        </span>
                     </li>
                     <li className="h-auto w-[1px] bg-[#ccc]"></li>
                     <li className="px-3">
                         <span className="block font-bold uppercase text-gray-400 text-[12px]">
                             Lượt xem
                         </span>
-                        <span className="font-bold text-[red]">1.2K</span>
+                        <span className="font-bold text-[red]">
+                            {documentDetails.views}
+                        </span>
                     </li>
                     <li className="h-auto w-[1px] bg-[#ccc]"></li>
                     <li className="pl-3">
                         <span className="block font-bold uppercase text-gray-400 text-[12px]">
                             Lượt tải
                         </span>
-                        <span className="font-bold text-[red]">458</span>
+                        <span className="font-bold text-[red]">
+                            {documentDetails.downloads}
+                        </span>
                     </li>
                 </ul>
             </div>
@@ -55,7 +110,7 @@ export default function DocumentDetail() {
                 </div>
             </div>
             <embed
-                src="https://firebasestorage.googleapis.com/v0/b/baocaototnghiep-f9197.appspot.com/o/SPEAKING.pdf?alt=media&token=a6ba7e11-d6d8-4218-905d-2588a159f06b"
+                src={documentDetails.fileUrl + '#toolbar=0'}
                 type="application/pdf"
                 width="100%"
                 height="600px"
@@ -71,29 +126,11 @@ export default function DocumentDetail() {
                     }}
                 >
                     <div className="h-full border border-gray-300 rounded-md py-5 pl-10">
-                        <p className="pr-10">
-                            Chaâu AÙ NỘI DUNG CHÍNH 1. Vò trí đòa lý và kích
-                            thước của châu lục 2.Đặc điểm đòa hình và khoáng sản
-                            3.Củng cố 1. Vò trí đòa lý và kích thước của châu
-                            lục  Dựa vào lược đồ 1.1 sgk trang 4, hãy xác đònh
-                            điểm cực Bắc và Nam phần đất liền của Châu Á?  CA
-                            tiếp giáp với các Châu lục và đại dương nào? A B C D
-                            9 2 0 0 k m 8 5 0 k m a. Vò trí đòa lí:  Châu Á là
-                            một bộ phận của lục đòa Á – Âu  Tiếp giáp với Châu
-                            Phi và Châu u  Giáp với BBD, D, TBD b. Kích thước:
-                            - Rộng lớn nhất thế giới. - Kéo dài từ vòng cực Bắc
-                            đến xích đạo.  1. Vò trí đòa líù và kích thước của
-                            châu lục Làm cho khí hậu có sự phân hóa đa dạng và
-                            mang tính lục đòa cao 2. ĐẶC ĐIỂM ĐỊA HÌNH VÀ KHOÁNG
-                            SẢN NHÓM 1: 1. Điền tên một số dãy núi chính vào
-                            lược đồ. 2. Xác đònh các hướng núi chính. NHÓM 2: 1.
-                            Điền tên các sơn nguyên chính. 2. Núi và cao nguyên
-                            tập trung chủ yếu ở khu vực nào? NHÓM 3: 1. Điền tên
-                            các đồng bằng lớn và xác đònh các con sông chảy qua
-                            đồng bằng đó. D a õ y U D a õ y Ñ D a õ y H D a õ y
-                            C D a õ y C D a õ y Xem nội dung đầy đủ tại:
-                            https://123docz.net/document/466054-bai-1-vi-tri-di-ly-dia-hinh-va-khoang-san.htm
-                        </p>
+                        {pdfText ? (
+                            <p className="pr-10">{pdfText}</p>
+                        ) : (
+                            <p>Loading...</p>
+                        )}
                     </div>
                 </div>
             </div>

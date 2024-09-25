@@ -9,6 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 interface IDocumentItem {
+    _id: string;
     title: string;
     description?: string;
     categoryId: string;
@@ -158,7 +159,7 @@ export default function Document() {
                     {documents.map((item, index) => (
                         <li
                             className="bg-[#fff] border border-[#ececec] hover:translate-y-[-4px]"
-                            key={index}
+                            key={item._id}
                         >
                             <DocumentItem props={item} />
                         </li>

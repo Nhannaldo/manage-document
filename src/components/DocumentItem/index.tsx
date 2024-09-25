@@ -4,6 +4,7 @@ import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 interface IDocPropItem {
     props: {
+        _id: string;
         title: string;
         description?: string;
         categoryId: string;
@@ -32,7 +33,10 @@ export default function DocumentItem({ props }: IDocPropItem) {
                     '0 1px 3px 0 rgb(0 0 0 / .1), 0 1px 2px -1px rgb(0 0 0 / .1)',
             }}
         >
-            <a href="" className="block hover:text-[#2a65ab]">
+            <a
+                href={`/document-detail/${props._id}`}
+                className="block hover:text-[#2a65ab]"
+            >
                 <div className="flex justify-center h-[200px]">
                     <img
                         src={props.imageUrl}

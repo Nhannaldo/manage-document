@@ -87,6 +87,7 @@ const arrayDocs = [
 ];
 
 interface IDocumentItem {
+    _id: string;
     title: string;
     description?: string;
     categoryId: string;
@@ -144,7 +145,7 @@ export default function Home() {
                         return (
                             <li
                                 className="bg-[#fff] border border-[#ececec] hover:translate-y-[-4px]"
-                                key={index}
+                                key={item._id}
                             >
                                 <DocumentItem props={itemWithHidden} />
                             </li>
