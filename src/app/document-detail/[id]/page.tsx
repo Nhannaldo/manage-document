@@ -2,7 +2,8 @@
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
-
+import textract from 'textract';
+// import pdf from 'pdf-parse';
 interface IDocumentPropItemDetail {
     _id: string;
     title: string;
@@ -27,7 +28,7 @@ export default function DocumentDetail() {
 
     const [documentDetails, setDocumentDetails] =
         useState<IDocumentPropItemDetail | null>(null);
-    const [pdfText, setPdfText] = useState<string | null>(null);
+    const [fileText, setFileText] = useState<string | null>(null);
 
     useEffect(() => {
         // Fetch document data by ID from your API or backend
@@ -41,15 +42,64 @@ export default function DocumentDetail() {
                 }
                 const data = await response.json();
                 setDocumentDetails(data);
+                // if (data.fileUrl) {
+                //     fetchFileContent(data.fileUrl);
+                // }
             }
         };
+        // Fetch file content using textract
+        // const fetchFileContent = async (url: string) => {
+        //     const response = await fetch(url);
+        //     const blob = await response.blob(); // Lấy Blob từ response
 
+        //     // Chuyển đổi Blob thành ArrayBuffer
+        //     const arrayBuffer = await blob.arrayBuffer();
+        //     const buffer = Buffer.from(arrayBuffer); // Chuyển đổi ArrayBuffer thành Buffer
+
+        //     // Sử dụng textract để lấy text
+        //     textract.fromBufferWithName(
+        //         'document.pdf',
+        //         buffer,
+        //         (error, text) => {
+        //             if (error) {
+        //                 console.error('Error extracting text:', error);
+        //             } else {
+        //                 setFileText(text);
+        //             }
+        //         },
+        //     );
+        // };
+
+        // Fetch file content using pdf-parse
+        // const fetchFileContent = async (url: string) => {
+        //     try {
+        //         const response = await fetch(url);
+        //         const pdfData = await response.arrayBuffer(); // Nhận dữ liệu dưới dạng ArrayBuffer
+
+        //         // Sử dụng pdf-parse để trích xuất văn bản
+        //         const data = await pdf(Buffer.from(pdfData));
+        //         setFileText(data.text); // Cập nhật nội dung văn bản
+        //     } catch (error) {
+        //         console.error('Error reading PDF file:', error);
+        //     }
+        // };
         fetchDocument();
     }, [id]);
+
+    console.log('filetext', fileText);
 
     if (!documentDetails) {
         return <div>Loading...</div>;
     }
+    const downloadFile = async () => {
+        const response = await fetch(documentDetails.fileUrl);
+        const blob = await response.blob();
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `${documentDetails.title}.pdf`; // Đặt tên cho tệp
+        link.click();
+        alert('Tải xuống file thành công!');
+    };
     return (
         <div className="max-w-[1200px] mx-auto mt-5">
             <h1 className="text-[24px]">{documentDetails.title}</h1>
@@ -96,15 +146,18 @@ export default function DocumentDetail() {
                 </ul>
             </div>
             <div className="flex justify-between mb-5 gap-1">
-                <button className="px-5 py-[10px] bg-[#1877f2] rounded-md text-[#fff] flex items-center gap-3 hover:opacity-80">
+                <button className="px-5 py-[8px] bg-[#1877f2] rounded-md text-[#fff] flex items-center gap-3 hover:opacity-80">
                     <FacebookRoundedIcon />
                     Chia sẻ
                 </button>
                 <div>
-                    <button className="px-5 py-[10px] bg-white border text-[#999] hover:bg-[#dd098c] hover:text-white">
+                    <button className="px-5 py-[8px] bg-white border text-[#999] hover:bg-[#dd098c] hover:text-white">
                         Thêm vào Bộ sưu tập
                     </button>
-                    <button className="px-5 py-[10px] bg-[#f8ab54] text-white text-[14px]  ml-4 hover:bg-[#c80]">
+                    <button
+                        className="px-5 py-[10px] bg-[#f8ab54] text-white text-[14px]  ml-4 hover:bg-[#c80]"
+                        onClick={downloadFile}
+                    >
                         TẢI XUỐNG
                     </button>
                 </div>
@@ -113,7 +166,7 @@ export default function DocumentDetail() {
                 src={documentDetails.fileUrl + '#toolbar=0'}
                 type="application/pdf"
                 width="100%"
-                height="600px"
+                height="1000px"
             />
 
             <div className="mt-12">
@@ -125,9 +178,9 @@ export default function DocumentDetail() {
                             '0 1px 3px 0 rgb(0 0 0 / .1), 0 1px 2px -1px rgb(0 0 0 / .1)',
                     }}
                 >
-                    <div className="h-full border border-gray-300 rounded-md py-5 pl-10">
-                        {pdfText ? (
-                            <p className="pr-10">{pdfText}</p>
+                    <div className="h-full border border-gray-300 rounded-md py-5 pl-10 overflow-y-auto">
+                        {fileText ? (
+                            <pre className="pr-10 ">{fileText}</pre>
                         ) : (
                             <p>Loading...</p>
                         )}

@@ -24,16 +24,20 @@
     "pdfjs-dist": "^4.6.82",
     "react": "^18",
     "react-dom": "^18",
-    "react-quill": "^2.0.0"
+    "react-quill": "^2.0.0",
+    "textract": "^2.5.0"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
+    "@types/pdf-parse": "^1.1.4",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/textract": "^2.4.5",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
     "js-cookie": "^3.0.5",
+    "pdf-parse": "^1.1.1",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
