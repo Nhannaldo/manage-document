@@ -4,6 +4,13 @@ import { useEffect, useState } from 'react';
 import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
 import textract from 'textract';
 // import pdf from 'pdf-parse';
+import {
+    getDocument,
+    GlobalWorkerOptions,
+} from 'pdfjs-dist/legacy/build/pdf.mjs';
+
+GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
+
 interface IDocumentPropItemDetail {
     _id: string;
     title: string;
@@ -28,65 +35,58 @@ export default function DocumentDetail() {
 
     const [documentDetails, setDocumentDetails] =
         useState<IDocumentPropItemDetail | null>(null);
-    const [fileText, setFileText] = useState<string | null>(null);
+    const [fileText, setFileText] = useState('');
 
     useEffect(() => {
-        // Fetch document data by ID from your API or backend
         const fetchDocument = async () => {
             if (id) {
                 const response = await fetch(
                     `http://localhost:3001/documents/detail/${id}`,
-                ); // Your API to fetch document by ID
+                );
                 if (!response.ok) {
-                    throw new Error('Error fetching documents');
+                    return; // Early return on error
                 }
                 const data = await response.json();
+
                 setDocumentDetails(data);
-                // if (data.fileUrl) {
-                //     fetchFileContent(data.fileUrl);
-                // }
+
+                if (data.fileUrl) {
+                    console.log('File URL:', data.fileUrl);
+                    await fetchFileContent(data.fileUrl); // Call the fetchFileContent function
+                } else {
+                    console.warn('No fileUrl found in document data.');
+                }
             }
         };
-        // Fetch file content using textract
-        // const fetchFileContent = async (url: string) => {
-        //     const response = await fetch(url);
-        //     const blob = await response.blob(); // Lấy Blob từ response
 
-        //     // Chuyển đổi Blob thành ArrayBuffer
-        //     const arrayBuffer = await blob.arrayBuffer();
-        //     const buffer = Buffer.from(arrayBuffer); // Chuyển đổi ArrayBuffer thành Buffer
-
-        //     // Sử dụng textract để lấy text
-        //     textract.fromBufferWithName(
-        //         'document.pdf',
-        //         buffer,
-        //         (error, text) => {
-        //             if (error) {
-        //                 console.error('Error extracting text:', error);
-        //             } else {
-        //                 setFileText(text);
-        //             }
-        //         },
-        //     );
-        // };
-
-        // Fetch file content using pdf-parse
-        // const fetchFileContent = async (url: string) => {
-        //     try {
-        //         const response = await fetch(url);
-        //         const pdfData = await response.arrayBuffer(); // Nhận dữ liệu dưới dạng ArrayBuffer
-
-        //         // Sử dụng pdf-parse để trích xuất văn bản
-        //         const data = await pdf(Buffer.from(pdfData));
-        //         setFileText(data.text); // Cập nhật nội dung văn bản
-        //     } catch (error) {
-        //         console.error('Error reading PDF file:', error);
-        //     }
-        // };
         fetchDocument();
     }, [id]);
 
-    console.log('filetext', fileText);
+    const fetchFileContent = async (url: string) => {
+        try {
+            const loadingTask = getDocument(url);
+
+            const pdf = await loadingTask.promise; // Đảm bảo chờ promise hoàn thành
+
+            let textContent = '';
+            const numPages = pdf.numPages;
+
+            for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+                const page = await pdf.getPage(pageNum);
+                const content = await page.getTextContent();
+
+                const pageText = content.items
+                    .map((item) => ('str' in item ? item.str : ''))
+                    .join(' ');
+
+                textContent += pageText + '\n';
+            }
+
+            setFileText(textContent); // Cập nhật trạng thái
+        } catch (error) {
+            console.error('Error fetching PDF content:', error);
+        }
+    };
 
     if (!documentDetails) {
         return <div>Loading...</div>;
@@ -180,7 +180,7 @@ export default function DocumentDetail() {
                 >
                     <div className="h-full border border-gray-300 rounded-md py-5 pl-10 overflow-y-auto">
                         {fileText ? (
-                            <pre className="pr-10 ">{fileText}</pre>
+                            <p className="pr-10 ">{fileText}</p>
                         ) : (
                             <p>Loading...</p>
                         )}
