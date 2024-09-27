@@ -1,23 +1,31 @@
 'use client';
 import * as React from 'react';
-import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Pagination from '@mui/material/Pagination';
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 
 //folder
 import SearchResultItem from '@/components/SearchResultItem';
+import FilterSearch from '@/components/FilterSearch';
+
+export interface FilterState {
+    category: string;
+    typeFile: string;
+    subject: string;
+    pageCountRange: string;
+    sort: string;
+}
 export default function Search() {
-    const [age, setAge] = React.useState('');
-
-    const handleChange = (event: SelectChangeEvent) => {
-        setAge(event.target.value);
-    };
-
     const { slug } = useParams(); // Lấy slug từ dynamic route
     console.log('slug', slug);
 
+    const [filter, setFilter] = useState<FilterState>({
+        category: '',
+        typeFile: '',
+        subject: '',
+        pageCountRange: '',
+        sort: '',
+    });
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -28,7 +36,7 @@ export default function Search() {
                 setLoading(true);
                 try {
                     const response = await fetch(
-                        `http://localhost:3001/documents/search?q=${slug}`,
+                        `http://localhost:3001/documents/search?q=${slug}&category=${filter.category}&typeFile=${filter.typeFile}&subject=${filter.subject}&pageCountRange=${filter.pageCountRange}&sort=${filter.sort}`,
                     );
                     if (!response.ok) {
                         throw new Error('Error fetching search results');
@@ -44,7 +52,7 @@ export default function Search() {
 
             fetchDocuments();
         }
-    }, [slug]);
+    }, [slug, filter]);
 
     if (loading) {
         return <div>Loading...</div>;
@@ -63,101 +71,8 @@ export default function Search() {
                         : decodeURIComponent(slug)
                 }"`}
             </h1>
-            <div className="flex flex-wrap gap-4 mt-[32px]">
-                <div className="flex items-center gap-2 bg-[#fff] px-4 py-2 rounded border">
-                    <span>Danh mục</span>
-                    <Select
-                        value={age}
-                        onChange={handleChange}
-                        size="small"
-                        className="min-w-[200px]"
-                        MenuProps={{
-                            disableScrollLock: true,
-                        }}
-                    >
-                        <MenuItem value="">
-                            <em>None</em>
-                        </MenuItem>
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                </div>
-                <div className="flex items-center gap-2 bg-[#fff] px-4 py-2 rounded border">
-                    <span>Môn</span>
-                    <Select
-                        value={age}
-                        onChange={handleChange}
-                        size="small"
-                        className="min-w-[220px]"
-                        MenuProps={{
-                            disableScrollLock: true,
-                        }}
-                    >
-                        <MenuItem value="">
-                            <em>None</em>
-                        </MenuItem>
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                </div>
-                <div className="flex items-center gap-2 bg-[#fff] px-4 py-2 rounded border">
-                    <span>Loại file</span>
-                    <Select
-                        value={age}
-                        onChange={handleChange}
-                        size="small"
-                        className="min-w-[120px]"
-                        MenuProps={{
-                            disableScrollLock: true,
-                        }}
-                    >
-                        <MenuItem value="">
-                            <em>None</em>
-                        </MenuItem>
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                </div>
-                <div className="flex items-center gap-2 bg-[#fff] px-4 py-2 rounded border">
-                    <span>Độ dài</span>
-                    <Select
-                        value={age}
-                        onChange={handleChange}
-                        size="small"
-                        className="min-w-[180px]"
-                        MenuProps={{
-                            disableScrollLock: true,
-                        }}
-                    >
-                        <MenuItem value="">
-                            <em>None</em>
-                        </MenuItem>
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                </div>
-                <div className="flex items-center gap-2 mt-3 ">
-                    <span className="mr-4 font-[600]">Sắp xếp:</span>
-                    <div className="flex items-center gap-[34px]">
-                        <label className="flex items-center">
-                            <input type="radio" />
-                            <span className="ml-2">Mới đăng</span>
-                        </label>
-                        <label className="flex items-center">
-                            <input type="radio" />
-                            <span className="ml-2">Tải nhiều</span>
-                        </label>
-                        <label className="flex items-center">
-                            <input type="radio" />
-                            <span className="ml-2">Xem nhiều</span>
-                        </label>
-                    </div>
-                </div>
-            </div>
+            {/* Filter */}
+            <FilterSearch filter={filter} setFilter={setFilter} />
             {results.length > 0 ? (
                 <div className="mt-14">
                     <div className="grid grid-cols-12">
