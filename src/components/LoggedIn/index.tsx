@@ -63,7 +63,7 @@ export default function UserSection() {
                         >
                             <Badge badgeContent={17} color="error">
                                 <NotificationsIcon
-                                    className="text-[#4136c4]"
+                                    className="text-[#086eca]"
                                     sx={{ width: 28, height: 28 }}
                                 />
                             </Badge>

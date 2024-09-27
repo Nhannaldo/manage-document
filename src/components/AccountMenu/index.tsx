@@ -1,9 +1,9 @@
 import React from 'react';
 import { Menu, MenuItem, Avatar, ListItemIcon, Divider } from '@mui/material';
 import Logout from '@mui/icons-material/Logout';
-import MessageIcon from '@mui/icons-material/Message';
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import UploadIcon from '@mui/icons-material/Upload';
+import ArticleIcon from '@mui/icons-material/Article';
+import CollectionsIcon from '@mui/icons-material/Collections';
+import TopicIcon from '@mui/icons-material/Topic';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -94,21 +94,21 @@ const AccountMenu: React.FC<AccountMenuProps> = ({
             </Link>
             <MenuItem onClick={onClose}>
                 <Avatar>
-                    <MessageIcon />
+                    <ArticleIcon />
                 </Avatar>
-                Quản lý tin nhắn
+                Quản lý tài liệu
             </MenuItem>
             <MenuItem onClick={onClose}>
                 <Avatar>
-                    <UploadIcon />
+                    <CollectionsIcon />
                 </Avatar>
-                Tài liệu tải lên
+                Quản lý bộ sưu tập
             </MenuItem>
             <MenuItem onClick={onClose}>
                 <Avatar>
-                    <FileDownloadIcon />
+                    <TopicIcon />
                 </Avatar>
-                Tài liệu tải về
+                Quản lý đề thi
             </MenuItem>
             <Divider />
 
