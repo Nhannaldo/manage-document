@@ -1,21 +1,29 @@
+import Link from 'next/link';
 interface IDocSearchItem {
     result: {
+        _id: string;
         title: string;
         description: string;
     };
+    onClick: () => void;
 }
-export default function DocumentSearchItem({ result }: IDocSearchItem) {
+export default function DocumentSearchItem({
+    result,
+    onClick,
+}: IDocSearchItem) {
     return (
-        <div className="flex items-center space-x-3 px-4 py-2 hover:bg-[#ebebeb] cursor-pointer">
-            <span className="text-white text-[18px] font-[600] bg-[#086eca] rounded-md w-8 h-8 flex items-center justify-center">
-                W
-            </span>
-            <div>
-                <p>{result.title}</p>
-                <span className="text-[12px] text-[#7d7d7d]">
-                    {result.description}
+        <Link href={`/document-detail/${result._id}`} onClick={onClick}>
+            <div className="flex items-center space-x-3 px-4 py-2 hover:bg-[#ebebeb] cursor-pointer">
+                <span className="text-white text-[18px] font-[600] bg-[#086eca] rounded-md w-8 h-8 flex items-center justify-center">
+                    W
                 </span>
+                <div>
+                    <p>{result.title}</p>
+                    <span className="text-[12px] text-[#7d7d7d]">
+                        {result.description}
+                    </span>
+                </div>
             </div>
-        </div>
+        </Link>
     );
 }

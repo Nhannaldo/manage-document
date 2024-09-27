@@ -51,6 +51,11 @@ export default function SearchHeader() {
 
         fetchSearchDocuments();
     }, [debouncedValue]);
+
+    const handleItemClick = () => {
+        setShowResult(false); // Close the popover
+        setQuery('');
+    };
     return (
         <HeadlessTippy
             interactive
@@ -60,7 +65,11 @@ export default function SearchHeader() {
                     <PopperWrapper>
                         <h3 className="text-[#ccc] px-3 py-1">Kết quả</h3>
                         {searchResult.map((result, index) => (
-                            <DocumentSearchItem key={index} result={result} />
+                            <DocumentSearchItem
+                                key={index}
+                                result={result}
+                                onClick={handleItemClick}
+                            />
                         ))}
                     </PopperWrapper>
                 </div>

@@ -4,6 +4,7 @@ import SaveAltIcon from '@mui/icons-material/SaveAlt';
 
 interface SearchResultItemProps {
     result: {
+        _id: string;
         title: string;
         description: string;
         fileType: string; // e.g., PDF, DOC, etc.
@@ -35,7 +36,10 @@ export default function SearchResultItem({ result }: SearchResultItemProps) {
                     />
                 </div>
                 <div className="flex-[6]">
-                    <a href="" className="text-[20px] font-[600]">
+                    <a
+                        href={`/document-detail/${result._id}`}
+                        className="text-[20px] font-[600]"
+                    >
                         {result.title}
                     </a>
                     <p className="mt-2">{result.description}</p>
@@ -65,7 +69,10 @@ export default function SearchResultItem({ result }: SearchResultItemProps) {
                                 {result.downloads}
                             </span>
                             <button className="px-3 py-1 bg-[#f8ab54] text-white text-[14px] rounded-md ml-4">
-                                TẢI XUỐNG
+                                <a href={`/document-detail/${result._id}`}>
+                                    {' '}
+                                    TẢI XUỐNG
+                                </a>
                             </button>
                         </div>
                     </div>
