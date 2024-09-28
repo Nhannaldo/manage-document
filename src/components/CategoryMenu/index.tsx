@@ -3,12 +3,12 @@ export default function CategoryMenu() {
         <div className="w-[270px] bg-[#fff]">
             <ul className="border border-[#e0e0e0]">
                 <li className="text-[#3369aa] font-[700] text-[14px] border-b border-[#e0e0e0] hover:text-[#ff5722]">
-                    <a href="" className="p-[10px] block">
+                    <a href="/file-documents" className="p-[10px] block">
                         TÀI LIỆU
                     </a>
                 </li>
                 <li className="text-[#3369aa] font-[700] text-[14px] border-b border-[#e0e0e0] hover:text-[#ff5722]">
-                    <a href="" className="p-[10px] block">
+                    <a href="/lesson" className="p-[10px] block">
                         BÀI GIẢNG
                     </a>
                 </li>
@@ -23,7 +23,7 @@ export default function CategoryMenu() {
                     </a>
                 </li>
                 <li className="text-[#3369aa] font-[700] text-[14px] border-b border-[#e0e0e0] hover:text-[#ff5722]">
-                    <a href="" className="p-[10px] block">
+                    <a href="/exam/thithu" className="p-[10px] block">
                         TỰ LUYỆN TRẮC NGHIỆM
                     </a>
                 </li>
