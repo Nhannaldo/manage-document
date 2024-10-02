@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import DoneIcon from '@mui/icons-material/Done';
 
-export default function ExamPage() {
+export default function ExamSubjectPage() {
     // Mảng các câu hỏi và đáp án
     const questions = [
         {
