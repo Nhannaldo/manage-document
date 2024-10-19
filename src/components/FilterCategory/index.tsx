@@ -59,7 +59,16 @@ export default function FilterCategory({
                                 }`}
                             >
                                 {category.checked && (
-                                    <span className="text-white">✔</span>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="13"
+                                        height="13"
+                                        fill="currentColor"
+                                        className="text-white"
+                                        viewBox="0 0 12 16"
+                                    >
+                                        <path d="M13.485 1.929a1 1 0 0 1 1.414 1.414l-10 10a1 1 0 0 1-1.415 0l-4-4a1 1 0 0 1 1.415-1.414L4.5 11.086l9-9z" />
+                                    </svg>
                                 )}
                             </div>
                             <span className="text-blue-700">{`${category.name} (${category.count})`}</span>
