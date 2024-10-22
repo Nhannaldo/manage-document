@@ -3,6 +3,8 @@ import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
 import textract from 'textract';
+import { useUser } from '@/context/UserContext';
+
 // import pdf from 'pdf-parse';
 import {
     getDocument,
@@ -32,6 +34,7 @@ interface IDocumentPropItemDetail {
 }
 export default function DocumentDetail() {
     const { id } = useParams();
+    const { user } = useUser();
 
     const [documentDetails, setDocumentDetails] =
         useState<IDocumentPropItemDetail | null>(null);
@@ -100,6 +103,36 @@ export default function DocumentDetail() {
         link.click();
         alert('Tải xuống file thành công!');
     };
+
+    const handleAddFavorite = async () => {
+        try {
+            const response = await fetch(
+                'http://localhost:3001/favorite/create-new-favorite',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userId: user._id,
+                        documentId: id,
+                    }),
+                },
+            );
+            if (response.ok) {
+                alert('Tài liệu đã được thêm vào danh sách yêu thích!');
+            } else {
+                const data = await response.json();
+                alert(data.message || 'Có lỗi xảy ra');
+            }
+        } catch (error) {
+            console.error(
+                'Lỗi khi thêm tài liệu vào danh sách yêu thích:',
+                error,
+            );
+            alert('Có lỗi xảy ra khi thêm tài liệu vào danh sách yêu thích.');
+        }
+    };
     return (
         <div className="max-w-[1200px] mx-auto mt-5">
             <h1 className="text-[24px]">{documentDetails.title}</h1>
@@ -151,8 +184,11 @@ export default function DocumentDetail() {
                     Chia sẻ
                 </button>
                 <div>
-                    <button className="px-5 py-[8px] bg-white border text-[#999] hover:bg-[#dd098c] hover:text-white">
-                        Thêm vào Bộ sưu tập
+                    <button
+                        className="px-5 py-[8px] bg-white border text-[#999] hover:bg-[#dd098c] hover:text-white"
+                        onClick={handleAddFavorite}
+                    >
+                        Thêm vào Tài liệu quan tâm
                     </button>
                     <button
                         className="px-5 py-[10px] bg-[#f8ab54] text-white text-[14px]  ml-4 hover:bg-[#c80]"
