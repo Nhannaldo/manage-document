@@ -142,11 +142,50 @@ export default function ExamSubjectPage() {
                     <strong>Mức độ:</strong> Trung bình
                 </p>
 
+                {/* Kết quả thi */}
+                {submitted && (
+                    <div className="mt-3 bg-[#f0f0f0] mx-16 p-4">
+                        <h1 className="text-center text-[20px] font-bold text-[#2a70b8] border-b pb-2">
+                            Kết quả làm bài
+                        </h1>
+                        <p className="text-center text-xl font-bold text-[red] mb-1">
+                            {calculateCorrectAnswers()} điểm
+                        </p>
+                        <div className="pb-3 ml-[250px] space-y-2">
+                            <p className="font-[500]">
+                                Số câu đúng:{' '}
+                                <span className="text-[#2a70b8]">6</span>
+                            </p>
+                            <p className="font-[500]">
+                                Số câu sai:{' '}
+                                <span className="text-[#2a70b8]">9</span>
+                            </p>
+                            <p className="font-[500]">
+                                Thời gian làm bài:{' '}
+                                <span className="text-[#2a70b8]">47 giây</span>
+                            </p>
+                        </div>
+                        <div className="flex justify-center gap-5 border-t pt-4">
+                            <a
+                                href=""
+                                className="px-7 py-[5px] bg-[#2a70b8] text-[#fff] font-[400] rounded"
+                            >
+                                LÀM LẠI
+                            </a>
+                            <a
+                                href=""
+                                className="px-7 py-[5px] bg-[#2a70b8] text-[#fff] font-[400] rounded"
+                            >
+                                TRỞ VỀ
+                            </a>
+                        </div>
+                    </div>
+                )}
                 {questions.map((questionObj, questionIndex) => (
                     <div
                         key={questionIndex}
                         id={`question-${questionIndex}`}
-                        className="mb-6"
+                        className="mb-6 mt-4"
                     >
                         <p className="font-semibold mb-2">{`Câu ${
                             questionIndex + 1
@@ -162,8 +201,8 @@ export default function ExamSubjectPage() {
                                     ? isCorrect
                                         ? 'text-green-500'
                                         : isSelected && !isCorrect
-                                        ? 'text-red-500'
-                                        : ''
+                                          ? 'text-red-500'
+                                          : ''
                                     : '';
                                 return (
                                     <label
@@ -190,12 +229,6 @@ export default function ExamSubjectPage() {
                         </div>
                     </div>
                 ))}
-                {/* <div className="text-center">
-                    <button className="px-4 py-2 bg-[#4caf50] text-white font-[500] rounded-md hover:bg-[#85ce61]">
-                        <DoneIcon fontSize="small" className="mr-2" />
-                        Nộp bài
-                    </button>
-                </div> */}
             </div>
             {/* side right */}
             <div className="fixed top-[83px] right-[7px] rounded border shadow-md bg-[#fff] w-[250px]">
@@ -232,8 +265,8 @@ export default function ExamSubjectPage() {
                                 ? 'bg-green-500 text-white'
                                 : 'bg-red-500 text-white'
                             : isAnswered
-                            ? 'bg-blue-500 text-white'
-                            : 'border-gray-300';
+                              ? 'bg-blue-500 text-white'
+                              : 'border-gray-300';
                         return (
                             <button
                                 key={questionNumber}
@@ -245,21 +278,6 @@ export default function ExamSubjectPage() {
                         );
                     })}
                 </div>
-
-                {/* <div className="mt-4 p-4 bg-[#ccc]">
-                    <div className="flex items-center gap-3">
-                        <span className="inline-block w-5 h-5 bg-blue-500 rounded-full mr-2"></span>
-                        <span className="text-[12px] text-[#333] font-semibold">
-                            Câu hỏi đã làm
-                        </span>
-                    </div>
-                    <div className="flex items-center mt-4 gap-3">
-                        <span className="inline-block w-5 h-5 bg-white border border-gray-300 rounded-full mr-2"></span>
-                        <span className="text-[12px] text-[#333] font-semibold">
-                            Câu hỏi chưa làm
-                        </span>
-                    </div>
-                </div> */}
                 <div className="flex justify-center">
                     <button
                         onClick={handleSubmit}
@@ -268,13 +286,6 @@ export default function ExamSubjectPage() {
                         Nộp bài
                     </button>
                 </div>
-                {submitted && (
-                    <div className="text-center mt-4">
-                        <p className="text-xl font-bold">
-                            Điểm: {calculateCorrectAnswers()}/{questions.length}
-                        </p>
-                    </div>
-                )}
             </div>
         </div>
     );
