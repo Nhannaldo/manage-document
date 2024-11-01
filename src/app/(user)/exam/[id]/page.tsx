@@ -1,110 +1,52 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import DoneIcon from '@mui/icons-material/Done';
 
+interface Question {
+    _id: string;
+    question: string;
+    answers: string[];
+    correctAnswer: number;
+}
+interface Subject {
+    _id: string;
+    name: string;
+}
+interface Exam {
+    _id: string;
+    level: string;
+    subjectId: Subject;
+    questions: Question[];
+}
+
 export default function ExamSubjectPage() {
-    // Mảng các câu hỏi và đáp án
-    const questions = [
-        {
-            question:
-                'Cấu trúc dữ liệu nào thường được sử dụng để thực hiện thuật toán tìm kiếm nhị phân?',
-            answers: [
-                'A. Mảng sắp xếp.',
-                'B. Danh sách liên kết.',
-                'C. Cây tìm kiếm nhị phân.',
-                'D. Hàng đợi.',
-            ],
-            correctAnswer: 0, // A. Mảng sắp xếp
-        },
-        {
-            question:
-                'Độ phức tạp thời gian của thuật toán sắp xếp nhanh (Quick Sort) trong trường hợp trung bình là:',
-            answers: [
-                'A. O(n^2).',
-                'B. O(n log n).',
-                'C. O(n).',
-                'D. O(log n).',
-            ],
-            correctAnswer: 1, // B. O(n log n)
-        },
-        {
-            question:
-                'Cấu trúc dữ liệu nào phù hợp nhất để triển khai một hàng đợi (Queue)?',
-            answers: [
-                'A. Danh sách liên kết đơn.',
-                'B. Danh sách liên kết đôi.',
-                'C. Mảng.',
-                'D. Cây nhị phân.',
-            ],
-            correctAnswer: 0, // A. Danh sách liên kết đơn
-        },
-        {
-            question:
-                'Trong cây nhị phân, số lượng nút lá (leaf nodes) tối đa có thể có trong một cây có chiều cao h là:',
-            answers: ['A. 2^h.', 'B. 2^h - 1.', 'C. 2^(h+1) - 1.', 'D. h.'],
-            correctAnswer: 0, // A. 2^h
-        },
-        {
-            question: 'Thuật toán nào sau đây là thuật toán chia để trị?',
-            answers: [
-                'A. Thuật toán Dijkstra.',
-                'B. Thuật toán Merge Sort.',
-                'C. Thuật toán Kruskal.',
-                'D. Thuật toán Bellman-Ford.',
-            ],
-            correctAnswer: 1, // B. Thuật toán Merge Sort
-        },
-        {
-            question:
-                'Cấu trúc dữ liệu nào hoạt động theo nguyên tắc LIFO (Last In First Out)?',
-            answers: [
-                'A. Hàng đợi.',
-                'B. Ngăn xếp.',
-                'C. Cây nhị phân.',
-                'D. Danh sách liên kết.',
-            ],
-            correctAnswer: 1, // B. Ngăn xếp
-        },
-        {
-            question:
-                'Trong thuật toán tìm kiếm nhị phân, điều kiện quan trọng cần có của dữ liệu đầu vào là:',
-            answers: [
-                'A. Dữ liệu phải là số nguyên.',
-                'B. Dữ liệu phải có thứ tự sắp xếp.',
-                'C. Dữ liệu không được lặp lại.',
-                'D. Dữ liệu phải được lưu trữ trong một ngăn xếp.',
-            ],
-            correctAnswer: 1, // B. Dữ liệu phải có thứ tự sắp xếp
-        },
-        {
-            question:
-                'Độ phức tạp thời gian tốt nhất của thuật toán tìm kiếm tuyến tính (Linear Search) là:',
-            answers: ['A. O(n).', 'B. O(log n).', 'C. O(1).', 'D. O(n^2).'],
-            correctAnswer: 2, // C. O(1)
-        },
-        {
-            question:
-                'Cây tìm kiếm nhị phân cân bằng giúp tối ưu hóa độ phức tạp thời gian cho các phép toán tìm kiếm, chèn và xóa là:',
-            answers: ['A. O(n).', 'B. O(log n).', 'C. O(n log n).', 'D. O(1).'],
-            correctAnswer: 1, // B. O(log n)
-        },
-        {
-            question:
-                'Thuật toán nào được sử dụng để tìm đường đi ngắn nhất trong đồ thị với trọng số không âm?',
-            answers: [
-                'A. Thuật toán Dijkstra.',
-                'B. Thuật toán Floyd-Warshall.',
-                'C. Thuật toán Kruskal.',
-                'D. Thuật toán Prim.',
-            ],
-            correctAnswer: 0, // A. Thuật toán Dijkstra
-        },
-    ];
+    const { id } = useParams();
+
+    const [questions, setQuestions] = useState<Question[]>([]);
+    const [exams, setExams] = useState<Exam | null>(null);
+    const [subject, setSubject] = useState<Subject | null>(null);
+    useEffect(() => {
+        async function fetchQuestions() {
+            try {
+                const response = await fetch(
+                    `http://localhost:3001/exams/get-exam/${id}`,
+                ); // Thay bằng API thực tế của bạn
+                const data = await response.json();
+                setSubject(data.subjectId);
+                setExams(data);
+                setQuestions(data.questions);
+                setSelectedAnswers(Array(data.questions.length).fill(null));
+            } catch (error) {
+                console.error('Error fetching subjects:', error);
+            }
+        }
+        fetchQuestions();
+    }, [id]);
 
     // Trạng thái lưu câu trả lời đã chọn cho mỗi câu
-    const [selectedAnswers, setSelectedAnswers] = useState(
-        Array(questions.length).fill(null),
-    );
+    const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
+    console.log('select', selectedAnswers);
 
     const [submitted, setSubmitted] = useState(false);
     const handleAnswerClick = (questionIndex: number, answerIndex: number) => {
@@ -117,6 +59,13 @@ export default function ExamSubjectPage() {
     const totalQuestions = 10;
     // Tính toán số câu đúng
     const handleSubmit = () => {
+        // Kiểm tra xem có bất kỳ câu hỏi nào chưa được trả lời
+        const allAnswered = selectedAnswers.every((answer) => answer !== null);
+
+        if (!allAnswered) {
+            alert('Vui lòng chọn đáp án cho tất cả các câu hỏi!');
+            return; // Không thực hiện gửi nếu chưa chọn hết
+        }
         setSubmitted(true);
     };
 
@@ -133,13 +82,13 @@ export default function ExamSubjectPage() {
         <div className="relative mt-4 max-w-[900px] mx-auto">
             <div className="bg-white p-8 rounded-lg shadow-md w-full">
                 <h1 className="text-2xl font-bold mb-6 text-center">
-                    Thi thử Cấu Trúc Dữ Liệu và Giải Thuật
+                    Thi thử {subject?.name}
                 </h1>
                 <p className="mb-4">
-                    <strong>Mã đề:</strong> 2024.
+                    <strong>Mã đề:</strong> {exams?._id}
                 </p>
                 <p className="mb-8">
-                    <strong>Mức độ:</strong> Trung bình
+                    <strong>Mức độ:</strong> {exams?.level}
                 </p>
 
                 {/* Kết quả thi */}
@@ -181,7 +130,7 @@ export default function ExamSubjectPage() {
                         </div>
                     </div>
                 )}
-                {questions.map((questionObj, questionIndex) => (
+                {questions?.map((questionObj, questionIndex) => (
                     <div
                         key={questionIndex}
                         id={`question-${questionIndex}`}
@@ -220,7 +169,7 @@ export default function ExamSubjectPage() {
                                                 )
                                             }
                                             className="mr-2"
-                                            disabled={submitted} // Vô hiệu hóa khi nộp bài
+                                            disabled={submitted}
                                         />
                                         {answer}
                                     </label>
@@ -236,7 +185,7 @@ export default function ExamSubjectPage() {
                     Tổng số câu hỏi: {totalQuestions}
                 </h2>
                 <div className="grid grid-cols-6 gap-2 justify-center p-4">
-                    {questions.map((_, index) => {
+                    {questions?.map((_, index) => {
                         const questionNumber = index + 1;
                         const handleScrollToQuestion = () => {
                             const questionElement = document.getElementById(

@@ -23,7 +23,7 @@ export default function CategoryMenu() {
                     </a>
                 </li>
                 <li className="text-[#3369aa] font-[700] text-[14px] border-b border-[#e0e0e0] hover:text-[#ff5722]">
-                    <a href="/exam/thithu" className="p-[10px] block">
+                    <a href="/exam" className="p-[10px] block">
                         TỰ LUYỆN TRẮC NGHIỆM
                     </a>
                 </li>
