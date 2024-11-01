@@ -22,12 +22,12 @@ export default function SidebarProfile() {
         {
             href: '/profile/like',
             icon: <CollectionsIcon />,
-            label: 'Quản lý bộ sưu tập',
+            label: 'Quản lý yêu thích',
         },
         {
             href: '/profile/manage-test',
             icon: <TopicIcon />,
-            label: 'Quản lý đề thi',
+            label: 'Quản lý kết quả thi',
         },
         {
             href: '/profile/notify',

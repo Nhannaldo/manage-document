@@ -21,7 +21,7 @@ interface IDocumentItem {
     approvedAt?: Date;
 }
 interface TabUploadedDocumentProps {
-    statusFilter: boolean;
+    statusFilter: string;
 }
 const TabUploadedDocument: React.FC<TabUploadedDocumentProps> = ({
     statusFilter,

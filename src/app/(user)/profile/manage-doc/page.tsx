@@ -55,13 +55,13 @@ export default function ManageDocument() {
                 {value === 'one' && (
                     <div>
                         {/* Nội dung của tab "Tài liệu upload chờ duyệt" */}
-                        <TabUploadedDocument statusFilter={false} />
+                        <TabUploadedDocument statusFilter={'pending'} />
                     </div>
                 )}
                 {value === 'two' && (
                     <div>
                         {/* Nội dung của tab "Tài liệu upload" */}
-                        <TabUploadedDocument statusFilter={true} />
+                        <TabUploadedDocument statusFilter={'approved'} />
                     </div>
                 )}
                 {value === 'three' && (
