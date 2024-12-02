@@ -12,6 +12,7 @@ interface Question {
 interface Subject {
     _id: string;
     name: string;
+    subject: string;
 }
 interface Exam {
     _id: string;
