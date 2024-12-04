@@ -106,6 +106,69 @@ export default function DocumentDetail() {
             alert('Đã xảy ra lỗi khi gửi báo cáo!');
         }
     };
+
+    // tính views
+    const [hasViewed, setHasViewed] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollTop = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const docHeight = document.documentElement.scrollHeight;
+
+            // Tính phần trăm đã cuộn
+            const scrollPercent = (scrollTop + windowHeight) / docHeight;
+
+            // Nếu cuộn >=50% và chưa tính view
+            if (scrollPercent >= 0.5 && !hasViewed) {
+                const lastViewTime = localStorage.getItem('lastViewTime');
+                const now = new Date().getTime();
+
+                if (
+                    !lastViewTime ||
+                    now - parseInt(lastViewTime) >= 24 * 60 * 60 * 1000
+                ) {
+                    setHasViewed(true);
+                    localStorage.setItem('lastViewTime', now.toString());
+                    increaseViewCount(); // Gọi hàm tăng view
+                }
+            }
+        };
+
+        // Lắng nghe sự kiện scroll
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, [hasViewed]);
+
+    const increaseViewCount = async () => {
+        try {
+            const response = await fetch(
+                'http://localhost:3001/documents/increase-view',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        documentId: id, // Thay bằng ID tài liệu hiện tại
+                    }),
+                },
+            );
+
+            if (response.ok) {
+                console.log('View count increased successfully!');
+            } else {
+                const data = await response.json();
+                console.error('Error increasing view count:', data.message);
+            }
+        } catch (error) {
+            console.error('Error increasing view count:', error);
+        }
+    };
+
     const [documentDetails, setDocumentDetails] =
         useState<IDocumentPropItemDetail | null>(null);
     const [fileText, setFileText] = useState('');
@@ -234,6 +297,7 @@ export default function DocumentDetail() {
             alert('Có lỗi xảy ra khi thêm tài liệu vào danh sách yêu thích.');
         }
     };
+
     return (
         <>
             <div className="max-w-[1200px] mx-auto mt-5">
