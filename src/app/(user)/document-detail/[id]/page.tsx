@@ -1,5 +1,6 @@
 'use client';
 import { useParams } from 'next/navigation';
+
 // import pdf from 'pdf-parse';
 import {
     getDocument,
@@ -48,12 +49,16 @@ interface IDocumentPropItemDetail {
 export default function DocumentDetail() {
     const { id } = useParams();
     const { user } = useUser();
+    const currentUrl =
+        typeof window !== 'undefined' ? window.location.href : '';
 
     const [open, setOpen] = useState(false);
     const [reason, setReason] = useState('');
     const [otherReason, setOtherReason] = useState('');
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    console.log('currentUrl:', currentUrl);
 
     const handleSubmitReport = async () => {
         try {
@@ -159,16 +164,47 @@ export default function DocumentDetail() {
     if (!documentDetails) {
         return <div>Loading...</div>;
     }
-    const downloadFile = async () => {
-        const response = await fetch(documentDetails.fileUrl);
-        const blob = await response.blob();
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `${documentDetails.title}.pdf`; // Đặt tên cho tệp
-        link.click();
-        alert('Tải xuống file thành công!');
+    const handleDownloadFile = async () => {
+        try {
+            const response = await fetch(
+                'http://localhost:3001/download/create-new-download',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userId: user._id,
+                        documentId: id,
+                    }),
+                },
+            );
+            if (response.ok) {
+                const responseFile = await fetch(documentDetails.fileUrl);
+                const blob = await responseFile.blob();
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `${documentDetails.title}.pdf`;
+                link.click();
+                alert('Tải xuống file thành công!');
+            } else {
+                const data = await response.json();
+                alert(data.message || 'Có lỗi xảy ra');
+            }
+        } catch (error) {
+            console.error(
+                'Lỗi khi thêm tài liệu vào danh sách download:',
+                error,
+            );
+            alert('Có lỗi xảy ra khi thêm tài liệu vào danh sách download.');
+        }
     };
-
+    const handleShare = () => {
+        // Tạo URL chia sẻ Facebook với currentUrl
+        const shareURL = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`;
+        // Mở cửa sổ chia sẻ
+        window.open(shareURL, '_blank', 'width=600,height=400');
+    };
     const handleAddFavorite = async () => {
         try {
             const response = await fetch(
@@ -246,7 +282,10 @@ export default function DocumentDetail() {
                 </div>
                 <div className="flex justify-between mb-5 gap-1">
                     <div>
-                        <button className="px-5 py-[8px] bg-[#1877f2] rounded-md text-[#fff] flex items-center gap-3 hover:opacity-80">
+                        <button
+                            onClick={handleShare}
+                            className="px-5 py-[8px] bg-[#1877f2] rounded-md text-[#fff] flex items-center gap-3 hover:opacity-80"
+                        >
                             <FacebookRoundedIcon />
                             Chia sẻ
                         </button>
@@ -260,7 +299,7 @@ export default function DocumentDetail() {
                         </button>
                         <button
                             className="px-5 py-[10px] bg-[#f8ab54] text-white text-[14px]  ml-4 hover:bg-[#c80]"
-                            onClick={downloadFile}
+                            onClick={handleDownloadFile}
                         >
                             TẢI XUỐNG
                         </button>
