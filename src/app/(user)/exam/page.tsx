@@ -111,7 +111,6 @@ export default function Exam() {
                                     examId={exam._id}
                                     index={index}
                                     subject={exam.subjectId.name} // Tên môn học
-                                    level={exam.level} // Mức độ
                                     totalQuestions={exam.questions.length} // Tổng số câu hỏi
                                 />
                             ))}

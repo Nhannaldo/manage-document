@@ -18,8 +18,7 @@ interface IDocumentItem {
     downloads: number;
     uploadedBy: string;
     status: boolean;
-    sharedBy?: string[];
-    uploadedAt?: Date;
+    uploadedAt?: string;
     approvedAt?: Date;
 }
 export default function Like() {
@@ -31,7 +30,7 @@ export default function Like() {
     useEffect(() => {
         const fetchFavoriteDocuments = async () => {
             const response = await fetch(
-                `http://localhost:3001/favorite/get-all-document-favorite/${user._id}`,
+                `http://localhost:3001/favorite/get-all-document-favorite/${user?._id}`,
             );
             if (!response.ok) {
                 throw new Error('Failed to fetch favorite documents');
@@ -43,7 +42,7 @@ export default function Like() {
             setFavoriteDocuments(documents);
         };
         fetchFavoriteDocuments();
-    }, [user._id]);
+    }, [user?._id]);
     console.log(favoriteDocuments);
 
     return (
@@ -51,7 +50,7 @@ export default function Like() {
             <div className="border-b border-gray-200 pb-3">
                 <h2 className="text-[24px]">Quản lý yêu thích</h2>
             </div>
-            <div className="flex items-center justify-between mt-3">
+            {/* <div className="flex items-center justify-between mt-3">
                 <div>
                     <TextField
                         id="outlined-basic"
@@ -61,7 +60,7 @@ export default function Like() {
                         className="w-[400px]"
                     />
                 </div>
-            </div>
+            </div> */}
             {/* <div className="mt-3">Hiện chưa có tài liệu yêu thích</div> */}
             <div>
                 {/* Document List */}
@@ -74,6 +73,9 @@ export default function Like() {
                             <DocumentItem props={item} />
                         </li>
                     ))}
+                    {favoriteDocuments.length === 0 && (
+                        <div className="mt-3">Chưa có tài liệu yêu thích</div>
+                    )}
                 </ul>
             </div>
         </div>

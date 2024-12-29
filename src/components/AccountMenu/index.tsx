@@ -3,7 +3,7 @@ import { Menu, MenuItem, Avatar, ListItemIcon, Divider } from '@mui/material';
 import Logout from '@mui/icons-material/Logout';
 import ArticleIcon from '@mui/icons-material/Article';
 import CollectionsIcon from '@mui/icons-material/Collections';
-import TopicIcon from '@mui/icons-material/Topic';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -87,29 +87,36 @@ const AccountMenu: React.FC<AccountMenuProps> = ({
             }}
         >
             <Link href={'/profile'}>
-                <MenuItem onClick={onClose}>
+                <MenuItem>
                     <Avatar />
                     Thông tin cá nhân
                 </MenuItem>
             </Link>
-            <MenuItem onClick={onClose}>
-                <Avatar>
-                    <ArticleIcon />
-                </Avatar>
-                Quản lý tài liệu
-            </MenuItem>
-            <MenuItem onClick={onClose}>
-                <Avatar>
-                    <CollectionsIcon />
-                </Avatar>
-                Quản lý bộ sưu tập
-            </MenuItem>
-            <MenuItem onClick={onClose}>
-                <Avatar>
-                    <TopicIcon />
-                </Avatar>
-                Quản lý đề thi
-            </MenuItem>
+
+            <Link href={'/profile/manage-doc'}>
+                <MenuItem>
+                    <Avatar>
+                        <ArticleIcon />
+                    </Avatar>
+                    Quản lý tài liệu
+                </MenuItem>
+            </Link>
+            <Link href={'/profile/like'}>
+                <MenuItem onClick={onClose}>
+                    <Avatar>
+                        <CollectionsIcon />
+                    </Avatar>
+                    Quản lý yêu thích
+                </MenuItem>
+            </Link>
+            <Link href={'/profile/notify'}>
+                <MenuItem>
+                    <Avatar>
+                        <NotificationsIcon />
+                    </Avatar>
+                    Quản lý thông báo
+                </MenuItem>
+            </Link>
             <Divider />
 
             <MenuItem onClick={handleLogout}>

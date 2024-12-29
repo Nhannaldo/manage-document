@@ -2,11 +2,20 @@ import React from 'react';
 import { Menu, MenuItem, Avatar } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import CircleIcon from '@mui/icons-material/Circle';
+
+interface Notification {
+    userId: string;
+    title: string;
+    message: string;
+    createdAt: string;
+    isRead: boolean;
+}
 interface NotificationMenuProps {
     anchorEl: HTMLElement | null;
     open: boolean;
     onClose: () => void;
     menuId: string;
+    notifications: Notification[];
 }
 
 const NotificationMenu: React.FC<NotificationMenuProps> = ({
@@ -14,6 +23,7 @@ const NotificationMenu: React.FC<NotificationMenuProps> = ({
     open,
     onClose,
     menuId,
+    notifications,
 }) => {
     return (
         <Menu
@@ -62,7 +72,32 @@ const NotificationMenu: React.FC<NotificationMenuProps> = ({
                 vertical: 'top',
             }}
         >
-            {[1, 2, 3].map((notification, index) => (
+            {notifications.map((notification, index) => (
+                <MenuItem
+                    key={index}
+                    onClick={onClose}
+                    className="flex h-[68px] justify-between overflow-x-hidden"
+                >
+                    <div className="flex items-center">
+                        <Avatar>
+                            <NotificationsIcon />
+                        </Avatar>
+                        {notification.message.split(' ').length > 100
+                            ? notification.message
+                                  .split(' ')
+                                  .slice(0, 100)
+                                  .join(' ') + '...'
+                            : notification.message}
+                    </div>
+                    <div>
+                        <CircleIcon
+                            fontSize="inherit"
+                            className="text-[blue] justify-end"
+                        />
+                    </div>
+                </MenuItem>
+            ))}
+            {/* {[1, 2, 3].map((notification, index) => (
                 <MenuItem
                     key={index}
                     onClick={onClose}
@@ -81,7 +116,7 @@ const NotificationMenu: React.FC<NotificationMenuProps> = ({
                         />
                     </div>
                 </MenuItem>
-            ))}
+            ))} */}
         </Menu>
     );
 };

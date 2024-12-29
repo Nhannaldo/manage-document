@@ -136,27 +136,6 @@ export default function Login() {
                         </button>
                     </form>
 
-                    <div>
-                        <h3 className="text-[#4136c4] font-[400] text-center mt-4">
-                            Hoặc đăng nhập với
-                        </h3>
-                    </div>
-                    <div className="mt-4">
-                        <button className="flex items-center gap-[6rem] border-[0.0625rem] border-[#ccc] rounded-lg w-full h-10 hover:bg-[#ddd]">
-                            <Image
-                                className="ml-4"
-                                src={googlelogo}
-                                width={24}
-                                height={24}
-                                alt="ImageGoogle"
-                            />
-                            <div className="justify-center">
-                                <span className="text-[1rem]">
-                                    Đăng nhập với Google
-                                </span>
-                            </div>
-                        </button>
-                    </div>
                     <div className="mt-4 text-center">
                         <span className="text-[#666] text-[1rem] font-[350]">
                             Bạn chưa có tài khoản?

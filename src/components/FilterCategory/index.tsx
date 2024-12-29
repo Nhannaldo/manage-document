@@ -15,21 +15,23 @@ export default function FilterCategory({
     onFilterChange,
 }: FilterCategoryProps) {
     const [categories, setCategories] = useState<Category[]>([
-        { name: 'Lập trình cơ bản', count: 10, checked: false },
-        { name: 'Cấu trúc dữ liệu và giải thuật', count: 0, checked: false },
-        { name: 'Hệ điều hành', count: 0, checked: false },
-        { name: 'Lập trình hướng đối tượng', count: 0, checked: false },
-        { name: 'Cơ sở dữ liệu', count: 0, checked: false },
-        { name: 'Mạng máy tính', count: 0, checked: false },
-        { name: 'Phân tích và thiết kế hệ thống', count: 0, checked: false },
-        { name: 'An toàn thông tin', count: 0, checked: false },
-        { name: 'Kiến trúc máy tính', count: 0, checked: false },
-        { name: 'Lập trình Web', count: 0, checked: false },
-        { name: 'Trí tuệ nhân tạo', count: 0, checked: false },
-        { name: 'Phát triển phần mềm', count: 0, checked: false },
-        { name: 'Lập trình di động', count: 0, checked: false },
-        { name: 'Quản lý dự án phần mềm', count: 0, checked: false },
-        { name: 'Học máy', count: 0, checked: false },
+        { name: 'Kỹ thuật lập trình', checked: false },
+        { name: 'Lập trình Web', checked: false },
+        { name: 'Cơ sở dữ liệu', checked: false },
+        { name: 'Cấu trúc dữ liệu và giải thuật', checked: false },
+        { name: 'Lập trình hướng đối tượng', checked: false },
+        { name: 'Lập trình Windows', checked: false },
+        { name: 'Kiến trúc máy tính', checked: false },
+        { name: 'Mạng máy tính', checked: false },
+        { name: 'Phát triển ứng dụng di động', checked: false },
+        { name: 'Hệ điều hành', checked: false },
+        { name: 'Kiểm thử phần mềm', checked: false },
+        { name: 'Công nghệ phần mềm', checked: false },
+        { name: 'An toàn và bảo mật thông tin', checked: false },
+        { name: 'Học máy', checked: false },
+        { name: 'Trí tuệ nhân tạo', checked: false },
+        { name: 'Internet of thing', checked: false },
+        { name: 'Lập trình game', checked: false },
     ]);
 
     const handleCheckboxChange = (index: number) => {
@@ -71,7 +73,7 @@ export default function FilterCategory({
                                     </svg>
                                 )}
                             </div>
-                            <span className="text-blue-700">{`${category.name} (${category.count})`}</span>
+                            <span className="text-blue-700">{`${category.name}`}</span>
                         </label>
                     </li>
                 ))}

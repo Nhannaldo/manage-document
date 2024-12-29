@@ -17,7 +17,7 @@ interface IDocumentItem {
     uploadedBy: string;
     status: boolean;
     sharedBy?: string[];
-    uploadedAt?: Date;
+    uploadedAt?: string;
     approvedAt?: Date;
 }
 interface TabUploadedDocumentProps {
@@ -35,7 +35,7 @@ const TabUploadedDocument: React.FC<TabUploadedDocumentProps> = ({
         const fetchUploadedDocument = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:3001/documents/get-all-document-upload/${user._id}?status=${statusFilter}`,
+                    `http://localhost:3001/documents/get-all-document-upload/${user?._id}?status=${statusFilter}`,
                 );
                 if (!response.ok) {
                     throw new Error('Error fetching documents');
@@ -47,7 +47,7 @@ const TabUploadedDocument: React.FC<TabUploadedDocumentProps> = ({
             }
         };
         fetchUploadedDocument();
-    }, [user._id]);
+    }, [user?._id]);
     return (
         <div>
             {/* Document List */}
@@ -61,6 +61,9 @@ const TabUploadedDocument: React.FC<TabUploadedDocumentProps> = ({
                     </li>
                 ))}
             </ul>
+            {uploadedDocuments.length === 0 && (
+                <div className="mt-2 text-[#999]">Không có tài liệu nào</div>
+            )}
         </div>
     );
 };

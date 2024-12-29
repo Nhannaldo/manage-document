@@ -1,11 +1,21 @@
-import Sidebar from '@/components/SidebarProfile'; // Sidebar component with common links
+'use client';
+import Sidebar from '@/components/SidebarProfile';
 import Avatar from '@mui/material/Avatar';
+import { useEffect, useState } from 'react';
+import { useUser } from '@/context/UserContext';
 
 export default function ProfileLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
+    const { user } = useUser();
+    const [username, setUsername] = useState(user?.username || '');
+    useEffect(() => {
+        if (user) {
+            setUsername(user.username);
+        }
+    }, [user]);
     return (
         <div>
             <div className="bg-[#ddd] w-full h-[100px]"></div>
@@ -19,10 +29,12 @@ export default function ProfileLayout({
                                 height: 96,
                             }}
                         >
-                            <span className="text-[40px] ">N</span>
+                            <span className="text-[40px] ">
+                                {username.charAt(0)}
+                            </span>
                         </Avatar>
                     </div>
-                    <h3 className="text-[24px] font-[500]">nguyennhan</h3>
+                    <h3 className="text-[24px] font-[500]">{username}</h3>
                 </div>
             </div>
             <div className="mx-[10%] grid grid-cols-[20%_80%] mt-8 gap-3">

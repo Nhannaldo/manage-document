@@ -4,6 +4,7 @@ import '@/app/globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { UserProvider } from '@/context/UserContext';
+import { AlertProvider } from '@/context/AlertContext';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -27,14 +28,15 @@ export default function RootLayout({
                     {children}
                 </div>
                 <Footer /> */}
-
-                <UserProvider>
-                    <Header />
-                    <div className="pt-[67.2px] pb-[24px] bg-[#f8f8f8]">
-                        {children}
-                    </div>
-                    <Footer />
-                </UserProvider>
+                <AlertProvider>
+                    <UserProvider>
+                        <Header />
+                        <div className="pt-[67.2px] pb-[24px] bg-[#f8f8f8]">
+                            {children}
+                        </div>
+                        <Footer />
+                    </UserProvider>
+                </AlertProvider>
             </body>
         </html>
     );

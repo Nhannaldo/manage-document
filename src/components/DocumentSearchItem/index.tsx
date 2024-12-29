@@ -14,8 +14,8 @@ export default function DocumentSearchItem({
     return (
         <Link href={`/document-detail/${result._id}`} onClick={onClick}>
             <div className="flex items-center space-x-3 px-4 py-2 hover:bg-[#ebebeb] cursor-pointer">
-                <span className="text-white text-[18px] font-[600] bg-[#086eca] rounded-md w-8 h-8 flex items-center justify-center">
-                    W
+                <span className="text-white text-[14px] font-[600] bg-[#e2574c] rounded-md w-8 h-8 flex items-center justify-center">
+                    PDF
                 </span>
                 <div>
                     <p>{result.title}</p>

@@ -7,7 +7,7 @@ import DocumentItem from '@/components/DocumentItem';
 import Pagination from '@mui/material/Pagination';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-
+import CircularProgress from '@mui/material/CircularProgress';
 interface IDocumentItem {
     _id: string;
     title: string;
@@ -23,7 +23,7 @@ interface IDocumentItem {
     uploadedBy: string;
     status: boolean;
     sharedBy?: string[];
-    uploadedAt?: Date;
+    uploadedAt?: string;
     approvedAt?: Date;
     hidden?: boolean;
 }
@@ -34,9 +34,24 @@ export default function Document() {
     const [fileType, setFileType] = useState('');
     const [pageCountRange, setPageCountRange] = useState('');
     const [subjectNames, setSubjectNames] = useState<string[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
+    const itemsPerPage = 12; // Số phần tử mỗi trang
 
+    // Lấy danh sách tài liệu cho trang hiện tại
+    const paginatedDocuments = documents.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage,
+    );
+
+    const totalPages = Math.ceil(documents.length / itemsPerPage);
+
+    const handlePageChange = (_: React.ChangeEvent<unknown>, page: number) => {
+        setCurrentPage(page);
+    };
     useEffect(() => {
         const fetchFilteredDocuments = async () => {
+            setLoading(true);
             try {
                 const query = new URLSearchParams({
                     ...(sortBy && { sortBy }),
@@ -57,6 +72,8 @@ export default function Document() {
                 setDocuments(data);
             } catch (error) {
                 console.error('Error fetching documents:', error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -70,7 +87,7 @@ export default function Document() {
     return (
         <div className="max-w-[1280px] mx-auto grid grid-cols-12 mt-4 gap-8 px-2">
             <div className="col-span-12">
-                <section>
+                {/* <section>
                     <ol className="flex items-center text-gray-500 text-[15px]">
                         <li>
                             <HomeOutlinedIcon className="relative bottom-[2px]" />
@@ -85,7 +102,7 @@ export default function Document() {
                             <a href="">Kỹ thuật lập trình</a>
                         </li>
                     </ol>
-                </section>
+                </section> */}
                 <h1 className="h-[70px] bg-[#2a65aa] text-white leading-[70px] text-center text-[22px] font-[500] mt-1 mb-4">
                     Thư viện tài liệu
                 </h1>
@@ -155,21 +172,38 @@ export default function Document() {
                 </div>
 
                 {/* Document List */}
-                <ul className="grid grid-cols-4 gap-3 mt-4">
-                    {documents.map((item, index) => (
-                        <li
-                            className="bg-[#fff] border border-[#ececec] hover:translate-y-[-4px]"
-                            key={item._id}
-                        >
-                            <DocumentItem props={item} />
-                        </li>
-                    ))}
-                </ul>
+                {loading ? (
+                    <div className="flex justify-center items-center h-[400px]">
+                        <CircularProgress />
+                    </div>
+                ) : (
+                    <ul className="grid grid-cols-4 gap-3 mt-4 min-h[400px]">
+                        {paginatedDocuments.map((item) => (
+                            <li
+                                className="bg-[#fff] border border-[#ececec] hover:translate-y-[-4px]"
+                                key={item._id}
+                            >
+                                <DocumentItem props={item} />
+                            </li>
+                        ))}
+                        {documents.length === 0 && (
+                            <div className="flex text-gray-500 min-h-[400px] items-center justify-center col-span-4">
+                                Không có tài liệu nào phù hợp
+                            </div>
+                        )}
+                    </ul>
+                )}
 
-                {/* Pagination */}
-                <div className="flex justify-center mt-10">
-                    <Pagination count={5} size="large" />
-                </div>
+                {documents.length > 0 && (
+                    <div className="flex justify-center mt-10">
+                        <Pagination
+                            count={totalPages}
+                            page={currentPage}
+                            onChange={handlePageChange}
+                            size="large"
+                        />
+                    </div>
+                )}
             </div>
 
             <div className="col-span-3">

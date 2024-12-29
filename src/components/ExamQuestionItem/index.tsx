@@ -2,14 +2,12 @@ import Link from 'next/link';
 interface ExamQuestionItemProps {
     index: number;
     subject: string; // Tên môn học
-    level: string; // Mức độ
     totalQuestions: number; // Tổng số câu hỏi
     examId: string;
 }
 const ExamQuestionItem: React.FC<ExamQuestionItemProps> = ({
     index,
     subject,
-    level,
     totalQuestions,
     examId,
 }) => {
@@ -27,9 +25,9 @@ const ExamQuestionItem: React.FC<ExamQuestionItemProps> = ({
                     {subject} {index + 1}
                 </a>
                 <h3 className="text-[#333] text-[14px]">
-                    Mức độ:{' '}
-                    <span className="p-1 bg-[green] rounded text-[#fff] text-[12px] font-[500]">
-                        {level}
+                    Số câu làm bài:
+                    <span className="ml-1 p-1 bg-[green] rounded text-[#fff] text-[12px] font-[500]">
+                        20
                     </span>
                 </h3>
                 <h3 className="text-[#333] text-[14px]">

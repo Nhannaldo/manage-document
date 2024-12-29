@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import DoneIcon from '@mui/icons-material/Done';
-
+import CircularProgress from '@mui/material/CircularProgress';
 interface Question {
     _id: string;
     question: string;
@@ -16,19 +16,33 @@ interface Subject {
 }
 interface Exam {
     _id: string;
-    level: string;
     subjectId: Subject;
     questions: Question[];
 }
 
 export default function ExamSubjectPage() {
     const { id } = useParams();
-
     const [questions, setQuestions] = useState<Question[]>([]);
     const [exams, setExams] = useState<Exam | null>(null);
     const [subject, setSubject] = useState<Subject | null>(null);
+    const [loading, setLoading] = useState(false);
+    // Thời gian làm bài
+    const [timeElapsed, setTimeElapsed] = useState(0); // Thời gian đã làm bài (giây)
+    const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
+    function shuffleArray(array: any[]) {
+        const shuffledArray = [...array];
+        for (let i = shuffledArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffledArray[i], shuffledArray[j]] = [
+                shuffledArray[j],
+                shuffledArray[i],
+            ];
+        }
+        return shuffledArray;
+    }
     useEffect(() => {
         async function fetchQuestions() {
+            setLoading(true);
             try {
                 const response = await fetch(
                     `http://localhost:3001/exams/get-exam/${id}`,
@@ -36,13 +50,31 @@ export default function ExamSubjectPage() {
                 const data = await response.json();
                 setSubject(data.subjectId);
                 setExams(data);
-                setQuestions(data.questions);
-                setSelectedAnswers(Array(data.questions.length).fill(null));
+                // Trộn câu hỏi và lấy đúng số lượng
+                const totalQuestions = data.questions.length;
+                const numberOfQuestionsToFetch =
+                    totalQuestions < 20 ? totalQuestions : 20;
+                const shuffledQuestions = shuffleArray(data.questions);
+                setQuestions(
+                    shuffledQuestions.slice(0, numberOfQuestionsToFetch),
+                ); // Lấy toàn bộ nếu < 20 hoặc lấy 20 câu
+                setSelectedAnswers(Array(numberOfQuestionsToFetch).fill(null)); // Khởi tạo trạng thái trả lời
             } catch (error) {
                 console.error('Error fetching subjects:', error);
+            } finally {
+                setLoading(false); // End loading
             }
         }
         fetchQuestions();
+        // Bắt đầu bộ đếm thời gian khi vào trang
+        const startTimer = setInterval(() => {
+            setTimeElapsed((prevTime) => prevTime + 1);
+        }, 1000);
+        setTimer(startTimer);
+
+        return () => {
+            if (startTimer) clearInterval(startTimer); // Dọn dẹp khi rời trang
+        };
     }, [id]);
 
     // Trạng thái lưu câu trả lời đã chọn cho mỗi câu
@@ -58,6 +90,15 @@ export default function ExamSubjectPage() {
         }
     };
     const totalQuestions = 10;
+
+    const formatTime = (seconds: number) => {
+        if (seconds < 60) {
+            return `${seconds} giây`;
+        }
+        const minutes = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${minutes} phút ${secs > 0 ? `${secs} giây` : ''}`;
+    };
     // Tính toán số câu đúng
     const handleSubmit = () => {
         // Kiểm tra xem có bất kỳ câu hỏi nào chưa được trả lời
@@ -68,6 +109,7 @@ export default function ExamSubjectPage() {
             return; // Không thực hiện gửi nếu chưa chọn hết
         }
         setSubmitted(true);
+        if (timer) clearInterval(timer); // Dừng bộ đếm thời gian khi nộp bài
     };
 
     const calculateCorrectAnswers = () => {
@@ -79,6 +121,19 @@ export default function ExamSubjectPage() {
         }, 0);
     };
 
+    const calculateIncorrectAnswers = () => {
+        return questions.length - calculateCorrectAnswers();
+    };
+    // Hiển thị Loading
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div className="text-center">
+                    <CircularProgress />
+                </div>
+            </div>
+        );
+    }
     return (
         <div className="relative mt-4 max-w-[900px] mx-auto">
             <div className="bg-white p-8 rounded-lg shadow-md w-full">
@@ -88,9 +143,6 @@ export default function ExamSubjectPage() {
                 <p className="mb-4">
                     <strong>Mã đề:</strong> {exams?._id}
                 </p>
-                <p className="mb-8">
-                    <strong>Mức độ:</strong> {exams?.level}
-                </p>
 
                 {/* Kết quả thi */}
                 {submitted && (
@@ -99,20 +151,28 @@ export default function ExamSubjectPage() {
                             Kết quả làm bài
                         </h1>
                         <p className="text-center text-xl font-bold text-[red] mb-1">
-                            {calculateCorrectAnswers()} điểm
+                            {(10 / questions.length) *
+                                calculateCorrectAnswers()}{' '}
+                            điểm
                         </p>
                         <div className="pb-3 ml-[250px] space-y-2">
                             <p className="font-[500]">
                                 Số câu đúng:{' '}
-                                <span className="text-[#2a70b8]">6</span>
+                                <span className="text-[#2a70b8]">
+                                    {calculateCorrectAnswers()}
+                                </span>
                             </p>
                             <p className="font-[500]">
                                 Số câu sai:{' '}
-                                <span className="text-[#2a70b8]">9</span>
+                                <span className="text-[#2a70b8]">
+                                    {calculateIncorrectAnswers()}
+                                </span>
                             </p>
                             <p className="font-[500]">
                                 Thời gian làm bài:{' '}
-                                <span className="text-[#2a70b8]">47 giây</span>
+                                <span className="text-[#2a70b8]">
+                                    {formatTime(timeElapsed)}
+                                </span>
                             </p>
                         </div>
                         <div className="flex justify-center gap-5 border-t pt-4">
@@ -122,12 +182,12 @@ export default function ExamSubjectPage() {
                             >
                                 LÀM LẠI
                             </a>
-                            <a
-                                href=""
-                                className="px-7 py-[5px] bg-[#2a70b8] text-[#fff] font-[400] rounded"
+                            <div
+                                className="px-7 py-[5px] bg-[#2a70b8] text-[#fff] font-[400] rounded cursor-pointer"
+                                onClick={() => window.history.back()}
                             >
                                 TRỞ VỀ
-                            </a>
+                            </div>
                         </div>
                     </div>
                 )}
@@ -228,6 +288,12 @@ export default function ExamSubjectPage() {
                         );
                     })}
                 </div>
+                {/* Hiển thị thời gian */}
+                {!submitted && (
+                    <p className="text-center font-semibold text-red-500">
+                        Thời gian: {formatTime(timeElapsed)}
+                    </p>
+                )}
                 <div className="flex justify-center">
                     <button
                         onClick={handleSubmit}

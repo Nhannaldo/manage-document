@@ -7,12 +7,20 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import UploadIcon from '@mui/icons-material/Upload';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import NotificationMenu from '../NotificationMenu';
 import AccountMenu from '../AccountMenu';
 import { useUser } from '@/context/UserContext';
+import axios from 'axios';
 
+interface Notification {
+    userId: string;
+    title: string;
+    message: string;
+    createdAt: string;
+    isRead: boolean;
+}
 export default function UserSection() {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [anchorElNoti, setAnchorElNoti] = useState<null | HTMLElement>(null);
@@ -20,7 +28,10 @@ export default function UserSection() {
     const open = Boolean(anchorEl);
     const openNoti = Boolean(anchorElNoti);
     const { user } = useUser();
+    const [notifications, setNotifications] = useState<Notification[]>([]);
 
+    console.log('User:', user);
+    //handle
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -36,6 +47,39 @@ export default function UserSection() {
     const handleCloseNoti = () => {
         setAnchorElNoti(null);
     };
+
+    const startLongPolling = () => {
+        axios
+            .get(`http://localhost:3001/notification/long-polling/${user?._id}`)
+            .then((response) => {
+                // Thêm thông báo mới vào state
+                setNotifications((prevNotifications) => [
+                    response.data,
+                    ...prevNotifications,
+                ]);
+            })
+            .catch((error) => {
+                console.error('Error during long polling:', error);
+                setTimeout(startLongPolling, 5000); // Retry sau 5 giây nếu có lỗi
+            });
+    };
+
+    useEffect(() => {
+        // Lấy danh sách thông báo khi component được mount
+        axios
+            .get(
+                `http://localhost:3001/notification/get-all-notification/${user?._id}`,
+            )
+            .then((response) => {
+                setNotifications(response.data);
+            })
+            .catch((error) => {
+                console.error('Error fetching notifications:', error);
+            });
+
+        // Bắt đầu long polling
+        startLongPolling();
+    }, [user?._id]);
 
     return (
         <div className="flex flex-1 justify-end">
@@ -61,7 +105,13 @@ export default function UserSection() {
                             aria-expanded={openNoti ? 'true' : undefined}
                             onClick={handleClickNoti}
                         >
-                            <Badge badgeContent={17} color="error">
+                            <Badge
+                                badgeContent={
+                                    notifications.filter((n) => !n.isRead)
+                                        .length
+                                }
+                                color="error"
+                            >
                                 <NotificationsIcon
                                     className="text-[#086eca]"
                                     sx={{ width: 28, height: 28 }}
@@ -73,6 +123,7 @@ export default function UserSection() {
                             open={openNoti}
                             onClose={handleCloseNoti}
                             menuId="menu"
+                            notifications={notifications}
                         />
                     </div>
 
@@ -102,7 +153,7 @@ export default function UserSection() {
                                             height: 34,
                                         }}
                                     >
-                                        N
+                                        {user.username.charAt(0)}
                                     </Avatar>
                                 </IconButton>
                             </Tooltip>

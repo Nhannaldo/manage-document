@@ -77,6 +77,25 @@ export default function Upload() {
     const handleFileChange = async (event: any) => {
         const file = event.target.files[0];
         if (file) {
+            const mimeType = file.type; // Lấy MIME type
+
+            console.log('MIME type:', mimeType);
+
+            if (mimeType === 'application/pdf') {
+                setTypeFile('pdf');
+            } else if (
+                mimeType === 'application/msword' ||
+                mimeType ===
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            ) {
+                setTypeFile('docx');
+            } else {
+                console.error('Unsupported file type.');
+                alert('Chỉ hỗ trợ file PDF hoặc Word.');
+                return;
+            }
+            const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
+            setFileSize(Number(sizeInMB));
             const formData = new FormData();
             formData.append('file', file);
             formData.append('upload_preset', uploadPreset);
@@ -109,8 +128,6 @@ export default function Upload() {
         fileImageInputRef.current?.click(); // Mở dialog chọn file
     };
 
-    console.log('Page:', numberOfPages);
-
     //useEffect
     const [categories, setCategories] = useState<Category[]>([]);
     const [typefiles, setTypeFiles] = useState<TypeFile[]>([]);
@@ -118,6 +135,8 @@ export default function Upload() {
     const [selectedCategory, setSelectedCategory] = useState<string>('');
     const [selectedTypeFile, setSelectedTypeFile] = useState<string>('');
     const [selectedSubject, setSelectedSubject] = useState<string>('');
+    const [fileSize, setFileSize] = useState(0);
+    const [typeFile, setTypeFile] = useState<string>('');
 
     useEffect(() => {
         async function fetchCategories() {
@@ -159,6 +178,13 @@ export default function Upload() {
         fetchSubjects();
     }, []);
 
+    useEffect(() => {
+        if (typefiles.length > 0) {
+            setSelectedTypeFile(
+                typefiles.find((item) => item.name === typeFile)?._id || '',
+            );
+        }
+    }, [typefiles, typeFile]);
     // Hàm loại bỏ các thẻ HTML và trả về văn bản thuần
     const handleDescriptionChange = (value: string) => {
         setDescription(value); // Lưu giá trị thuần vào state
@@ -181,6 +207,7 @@ export default function Upload() {
             typefileId: selectedTypeFile,
             pagenumber: numberOfPages,
             uploadedBy: user._id,
+            size: fileSize,
         };
 
         // Kiểm tra các giá trị trước khi gọi API
@@ -211,15 +238,6 @@ export default function Upload() {
             alert('Đã xảy ra lỗi khi đăng ký.');
         }
     };
-    console.log('user:', user._id);
-
-    console.log('description:', description);
-    console.log('category:', categories);
-    console.log('selectcategory:', selectedCategory);
-    console.log('typefile:', typefiles);
-    console.log('selecttypefile:', selectedTypeFile);
-    console.log('subject:', subjects);
-    console.log('selectsubject:', selectedSubject);
 
     return (
         <div className="max-w-[960px] mx-auto mt-6">
@@ -361,7 +379,7 @@ export default function Upload() {
                                 type="file"
                                 onChange={handleFileChange}
                             />
-                            {fileUrl && (
+                            {/* {fileUrl && (
                                 <TextField
                                     variant="outlined"
                                     size="small"
@@ -372,19 +390,33 @@ export default function Upload() {
                                         readOnly: true, // Chỉ cho phép đọc
                                     }}
                                 />
-                            )}
+                            )} */}
                         </li>
-                        <li className="mb-4 flex items-center gap-3">
-                            <span>Số trang tài liệu</span>
-                            <TextField
-                                variant="outlined"
-                                size="small"
-                                className="my-1"
-                                type="number"
-                                placeholder="0"
-                                disabled
-                                value={numberOfPages}
-                            />
+                        <li className="mb-4 flex items-center gap-8">
+                            <div className="flex items-center gap-3">
+                                <span>Số trang tài liệu</span>
+                                <TextField
+                                    variant="outlined"
+                                    size="small"
+                                    className="my-1"
+                                    type="number"
+                                    placeholder="0"
+                                    disabled
+                                    value={numberOfPages}
+                                />
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <span>Dung lượng tệp</span>
+                                <TextField
+                                    variant="outlined"
+                                    size="small"
+                                    className="my-1"
+                                    type="text"
+                                    placeholder="0"
+                                    disabled
+                                    value={`${fileSize} MB`}
+                                />
+                            </div>
                         </li>
                         <li className="mb-4">
                             <label className="block">Loại file</label>
@@ -398,6 +430,7 @@ export default function Upload() {
                                 MenuProps={{
                                     disableScrollLock: true,
                                 }}
+                                disabled
                             >
                                 {typefiles.map((typefile) => (
                                     <MenuItem

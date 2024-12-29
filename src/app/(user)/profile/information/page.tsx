@@ -1,6 +1,6 @@
 'use client';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useUser } from '@/context/UserContext';
 import Cookies from 'js-cookie';
 import TextField from '@mui/material/TextField';
@@ -10,10 +10,10 @@ export default function Information() {
 
     const [isOpen, setIsOpen] = useState(false);
 
-    const [username, setUsername] = useState(user.username || '');
-    const [address, setAddress] = useState(user.address || '');
-    const [dateOfBirth, setDateOfBirth] = useState(user.dateOfBirth || '');
-    const [phone, setPhone] = useState(user.phone || '');
+    const [username, setUsername] = useState(user?.username || '');
+    const [address, setAddress] = useState(user?.address || '');
+    const [dateOfBirth, setDateOfBirth] = useState(user?.dateOfBirth || '');
+    const [phone, setPhone] = useState(user?.phone || '');
 
     const openModal = () => {
         setIsOpen(true);
@@ -22,6 +22,15 @@ export default function Information() {
     const closeModal = () => {
         setIsOpen(false);
     };
+
+    useEffect(() => {
+        if (user) {
+            setUsername(user.username);
+            setAddress(user.address);
+            setDateOfBirth(user.dateOfBirth);
+            setPhone(user.phone);
+        }
+    }, [user]);
 
     async function handleSave() {
         // Lấy accessToken từ cookie
@@ -74,7 +83,9 @@ export default function Information() {
             <div className="text-[#333]">
                 <div className="flex items-center mt-3">
                     <p className="min-w-[200px]">Ngày sinh</p>
-                    {dateOfBirth}
+                    {dateOfBirth
+                        ? new Date(dateOfBirth).toLocaleDateString('en-GB')
+                        : ''}
                 </div>
 
                 <div className="flex items-center mt-3">
@@ -87,7 +98,7 @@ export default function Information() {
                 </div>
                 <div className="flex items-center mt-3">
                     <p className="min-w-[200px]">Email</p>
-                    {user.email}
+                    {user?.email}
                 </div>
             </div>
 

@@ -1,6 +1,6 @@
 'use client';
 import { useParams } from 'next/navigation';
-
+import { useAlert } from '@/context/AlertContext';
 // import pdf from 'pdf-parse';
 import {
     getDocument,
@@ -13,6 +13,7 @@ import { useUser } from '@/context/UserContext';
 import CloseIcon from '@mui/icons-material/Close';
 import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
 import FlagIcon from '@mui/icons-material/Flag';
+import CircularProgress from '@mui/material/CircularProgress';
 import {
     Box,
     Button,
@@ -41,12 +42,12 @@ interface IDocumentPropItemDetail {
     downloads: number;
     uploadedBy: string;
     status: boolean;
-    sharedBy?: string[];
-    uploadedAt?: Date;
+    uploadedAt?: string;
     approvedAt?: Date;
     hidden?: boolean;
 }
 export default function DocumentDetail() {
+    const { showAlert } = useAlert();
     const { id } = useParams();
     const { user } = useUser();
     const currentUrl =
@@ -93,7 +94,8 @@ export default function DocumentDetail() {
             );
 
             if (response.ok) {
-                alert('Báo cáo đã được gửi thành công!');
+                showAlert('Báo cáo đã được gửi thành công!', 'success');
+                // alert('Báo cáo đã được gửi thành công!');
                 setReason('');
                 setOtherReason('');
                 handleClose();
@@ -121,7 +123,8 @@ export default function DocumentDetail() {
 
             // Nếu cuộn >=50% và chưa tính view
             if (scrollPercent >= 0.5 && !hasViewed) {
-                const lastViewTime = localStorage.getItem('lastViewTime');
+                const lastViewTimeKey = `lastViewTime_${id}`; // Tạo key riêng cho từng tài liệu
+                const lastViewTime = localStorage.getItem(lastViewTimeKey);
                 const now = new Date().getTime();
 
                 if (
@@ -129,7 +132,7 @@ export default function DocumentDetail() {
                     now - parseInt(lastViewTime) >= 24 * 60 * 60 * 1000
                 ) {
                     setHasViewed(true);
-                    localStorage.setItem('lastViewTime', now.toString());
+                    localStorage.setItem(lastViewTimeKey, now.toString());
                     increaseViewCount(); // Gọi hàm tăng view
                 }
             }
@@ -141,7 +144,7 @@ export default function DocumentDetail() {
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, [hasViewed]);
+    }, [hasViewed, id]);
 
     const increaseViewCount = async () => {
         try {
@@ -225,7 +228,11 @@ export default function DocumentDetail() {
     };
 
     if (!documentDetails) {
-        return <div>Loading...</div>;
+        return (
+            <div className="flex justify-center items-center h-[400px]">
+                <CircularProgress />
+            </div>
+        );
     }
     const handleDownloadFile = async () => {
         try {
@@ -249,7 +256,8 @@ export default function DocumentDetail() {
                 link.href = URL.createObjectURL(blob);
                 link.download = `${documentDetails.title}.pdf`;
                 link.click();
-                alert('Tải xuống file thành công!');
+                showAlert('Tải xuống file thành công!', 'success');
+                // alert('Tải xuống file thành công!');
             } else {
                 const data = await response.json();
                 alert(data.message || 'Có lỗi xảy ra');
@@ -304,14 +312,21 @@ export default function DocumentDetail() {
                 <h1 className="text-[24px]">{documentDetails.title}</h1>
                 <div className="flex justify-between items-center mb-5 mt-6">
                     <div className="flex items-center space-x-4 text-[#999999]">
-                        <span>Ngày đăng: 25/09/2024</span>
+                        <span>
+                            Ngày đăng:{' '}
+                            {documentDetails.uploadedAt
+                                ? new Date(
+                                      documentDetails.uploadedAt,
+                                  ).toLocaleDateString('en-GB')
+                                : '25/09/2024'}
+                        </span>
                         <span className="w-[1px] h-[20px] border border-gray-300"></span>
                         <span>Dung lượng: 5.4 MB</span>
                         <span className="w-[1px] h-[20px] border border-gray-300"></span>
                         <p className="flex items-center gap-2">
                             Loại tài liệu:{' '}
-                            <span className="text-white text-[18px] font-[600] bg-[#086eca] rounded-md w-8 h-8 flex items-center justify-center">
-                                W
+                            <span className="text-white text-[14px] font-[600] bg-[#e2574c] rounded-md w-8 h-8 flex items-center justify-center">
+                                PDF
                             </span>
                         </p>
                     </div>

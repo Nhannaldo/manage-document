@@ -18,21 +18,26 @@ interface IDocPropItem {
         uploadedBy: string;
         status: boolean;
         sharedBy?: string[];
-        uploadedAt?: Date;
+        uploadedAt?: string;
         approvedAt?: Date;
         hidden?: boolean;
     };
 }
 
 export default function DocumentItem({ props }: IDocPropItem) {
+    console.log('DocumentItem:', props);
+
     return (
         <div
-            className="p-4 h-full"
+            className="p-4 h-full relative"
             style={{
                 boxShadow:
                     '0 1px 3px 0 rgb(0 0 0 / .1), 0 1px 2px -1px rgb(0 0 0 / .1)',
             }}
         >
+            <span className="absolute top-3 left-3 text-white text-[10px] font-[700] bg-[#e2574c] rounded-md w-7 h-7 flex items-center justify-center">
+                PDF
+            </span>
             <a
                 href={`/document-detail/${props._id}`}
                 className="block hover:text-[#2a65ab]"
@@ -61,9 +66,11 @@ export default function DocumentItem({ props }: IDocPropItem) {
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-1">
                             <HistoryIcon fontSize="small" />
-                            12/09/2024
+                            {props.uploadedAt &&
+                                new Date(props.uploadedAt).toLocaleDateString(
+                                    'en-GB',
+                                )}
                         </div>
-                        <span>Loại tài liệu: PDF</span>
                     </div>
                 )}
                 <div className="flex items-center mt-4 justify-end gap-2 text-[#999]">

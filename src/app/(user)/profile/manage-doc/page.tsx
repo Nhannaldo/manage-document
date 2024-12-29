@@ -22,7 +22,7 @@ interface IDocumentItem {
     uploadedBy: string;
     status: boolean;
     sharedBy?: string[];
-    uploadedAt?: Date;
+    uploadedAt?: string;
     approvedAt?: Date;
 }
 export default function ManageDocument() {
@@ -40,7 +40,7 @@ export default function ManageDocument() {
     useEffect(() => {
         const fetchDownloadDocuments = async () => {
             const response = await fetch(
-                `http://localhost:3001/download/get-all-document-download/${user._id}`,
+                `http://localhost:3001/download/get-all-document-download/${user?._id}`,
             );
             if (!response.ok) {
                 throw new Error('Failed to fetch download documents');
@@ -52,7 +52,7 @@ export default function ManageDocument() {
             setDownloadDocuments(documents);
         };
         fetchDownloadDocuments();
-    }, [user._id]);
+    }, [user?._id]);
 
     return (
         <div className="">
@@ -85,14 +85,14 @@ export default function ManageDocument() {
                     />
                     {/* <Tab value="three" label="Item Three" /> */}
                 </Tabs>
-                <div>
+                {/* <div>
                     <TextField
                         id="outlined-basic"
                         variant="outlined"
                         size="small"
                         placeholder="Tìm kiếm..."
                     />
-                </div>
+                </div> */}
             </div>
             {/* Render nội dung khác nhau dựa trên tab được chọn */}
             <div className="mt-4">
@@ -121,6 +121,11 @@ export default function ManageDocument() {
                                 </li>
                             ))}
                         </ul>
+                        {downloadDocuments.length === 0 && (
+                            <div className="text-center text-gray-500 mt-4">
+                                Không có tài liệu nào.
+                            </div>
+                        )}
                     </div>
                 )}
             </div>

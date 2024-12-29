@@ -22,7 +22,6 @@ interface IDocumentItem {
     downloads: number;
     uploadedBy: string;
     status: boolean;
-    sharedBy?: string[];
     uploadedAt?: string;
     approvedAt?: Date;
     hidden?: boolean;
@@ -63,7 +62,7 @@ export default function Document() {
                 }).toString();
 
                 const response = await fetch(
-                    `http://localhost:3001/documents/filterlesson?${query}`,
+                    `http://localhost:3001/documents/filtertopic?${query}`,
                 );
                 if (!response.ok) {
                     throw new Error('Error fetching documents');
@@ -104,7 +103,7 @@ export default function Document() {
                     </ol>
                 </section> */}
                 <h1 className="h-[70px] bg-[#2a65aa] text-white leading-[70px] text-center text-[22px] font-[500] mt-1 mb-4">
-                    Thư viện bài giảng
+                    Thư viện Luận văn & Đề tài
                 </h1>
             </div>
 
