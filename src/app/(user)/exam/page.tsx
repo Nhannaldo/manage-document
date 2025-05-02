@@ -2,24 +2,8 @@
 import { useEffect, useState } from 'react';
 import ExamQuestionItem from '@/components/ExamQuestionItem';
 import CircularProgress from '@mui/material/CircularProgress';
+import type { Exam, Subject, Question } from '@/types/exam';
 
-interface Question {
-    _id: string;
-    question: string;
-    answers: string[];
-    correctAnswer: number;
-}
-interface Subject {
-    _id: string;
-    name: string;
-    subject: string;
-}
-interface Exam {
-    _id: string;
-    level: string;
-    subjectId: Subject;
-    questions: Question[];
-}
 export default function Exam() {
     const [subjects, setSubjects] = useState<Subject[]>([]);
     const [selectedSubject, setSelectedSubject] = useState('');

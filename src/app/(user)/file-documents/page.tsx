@@ -1,35 +1,15 @@
 'use client';
 import { useState, useEffect } from 'react';
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
 import FilterCategory from '@/components/FilterCategory';
 import DocumentItem from '@/components/DocumentItem';
 import Pagination from '@mui/material/Pagination';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import CircularProgress from '@mui/material/CircularProgress';
-interface IDocumentItem {
-    _id: string;
-    title: string;
-    description?: string;
-    categoryId: string;
-    subjectId: string;
-    fileUrl: string;
-    imageUrl: string;
-    typefileId: string;
-    pagenumber: number;
-    views: number;
-    downloads: number;
-    uploadedBy: string;
-    status: boolean;
-    sharedBy?: string[];
-    uploadedAt?: string;
-    approvedAt?: Date;
-    hidden?: boolean;
-}
+import type { DocumentType } from '@/types/document';
 
 export default function Document() {
-    const [documents, setDocuments] = useState<IDocumentItem[]>([]);
+    const [documents, setDocuments] = useState<DocumentType[]>([]);
     const [sortBy, setSortBy] = useState('newest');
     const [fileType, setFileType] = useState('');
     const [pageCountRange, setPageCountRange] = useState('');

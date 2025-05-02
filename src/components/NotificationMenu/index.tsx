@@ -2,14 +2,7 @@ import React from 'react';
 import { Menu, MenuItem, Avatar } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import CircleIcon from '@mui/icons-material/Circle';
-
-interface Notification {
-    userId: string;
-    title: string;
-    message: string;
-    createdAt: string;
-    isRead: boolean;
-}
+import type { Notification } from '@/types/notification';
 interface NotificationMenuProps {
     anchorEl: HTMLElement | null;
     open: boolean;
@@ -97,26 +90,6 @@ const NotificationMenu: React.FC<NotificationMenuProps> = ({
                     </div>
                 </MenuItem>
             ))}
-            {/* {[1, 2, 3].map((notification, index) => (
-                <MenuItem
-                    key={index}
-                    onClick={onClose}
-                    className="flex h-[68px] justify-between"
-                >
-                    <div className="flex items-center">
-                        <Avatar>
-                            <NotificationsIcon />
-                        </Avatar>
-                        <p className="">Bạn có 1 thông báo mới</p>
-                    </div>
-                    <div className="">
-                        <CircleIcon
-                            fontSize="inherit"
-                            className="text-[blue] justify-end"
-                        />
-                    </div>
-                </MenuItem>
-            ))} */}
         </Menu>
     );
 };

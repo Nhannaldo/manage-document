@@ -5,35 +5,17 @@ import UpgradeOutlinedIcon from '@mui/icons-material/UpgradeOutlined';
 import { useState, useRef, useEffect } from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-
 import { useRouter } from 'next/navigation';
-
 import { PDFDocument } from 'pdf-lib';
-//user
 import { useUser } from '@/context/UserContext';
-
+import type { Category, TypeFile, Subject } from '@/types/document';
 //text editor
 import dynamic from 'next/dynamic';
-
 import 'react-quill/dist/quill.snow.css';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 const cloudName = 'drakdfels';
 const uploadPreset = 'upload_image';
-
-interface Category {
-    _id: string;
-    name: string;
-}
-interface TypeFile {
-    _id: string;
-    name: string;
-}
-
-interface Subject {
-    _id: string;
-    name: string;
-}
 
 export default function Upload() {
     const { user } = useUser();
@@ -379,18 +361,6 @@ export default function Upload() {
                                 type="file"
                                 onChange={handleFileChange}
                             />
-                            {/* {fileUrl && (
-                                <TextField
-                                    variant="outlined"
-                                    size="small"
-                                    className="w-full my-1"
-                                    value={fileUrl} // Hiển thị URL của ảnh
-                                    placeholder="Ví dụ: http://domain.com/image/example.jpg"
-                                    InputProps={{
-                                        readOnly: true, // Chỉ cho phép đọc
-                                    }}
-                                />
-                            )} */}
                         </li>
                         <li className="mb-4 flex items-center gap-8">
                             <div className="flex items-center gap-3">

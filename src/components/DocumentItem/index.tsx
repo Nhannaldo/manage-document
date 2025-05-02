@@ -2,26 +2,10 @@ import HistoryIcon from '@mui/icons-material/History';
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
+import type { DocumentType } from '@/types/document';
+
 interface IDocPropItem {
-    props: {
-        _id: string;
-        title: string;
-        description?: string;
-        categoryId: string;
-        subjectId: string;
-        fileUrl: string;
-        imageUrl: string;
-        typefileId: string;
-        pagenumber: number;
-        views: number;
-        downloads: number;
-        uploadedBy: string;
-        status: boolean;
-        sharedBy?: string[];
-        uploadedAt?: string;
-        approvedAt?: Date;
-        hidden?: boolean;
-    };
+    props: DocumentType;
 }
 
 export default function DocumentItem({ props }: IDocPropItem) {

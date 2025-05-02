@@ -1,10 +1,5 @@
-import Link from 'next/link';
-interface ExamQuestionItemProps {
-    index: number;
-    subject: string; // Tên môn học
-    totalQuestions: number; // Tổng số câu hỏi
-    examId: string;
-}
+import type { ExamQuestionItemProps } from '@/types/exam';
+
 const ExamQuestionItem: React.FC<ExamQuestionItemProps> = ({
     index,
     subject,

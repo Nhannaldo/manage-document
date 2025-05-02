@@ -2,29 +2,12 @@
 import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import TextField from '@mui/material/TextField';
 import TabUploadedDocument from '@/components/TabUploadedDocument';
 import { useState, useEffect } from 'react';
 import DocumentItem from '@/components/DocumentItem';
 import { useUser } from '@/context/UserContext';
-interface IDocumentItem {
-    _id: string;
-    title: string;
-    description?: string;
-    categoryId: string;
-    subjectId: string;
-    fileUrl: string;
-    imageUrl: string;
-    typefileId: string;
-    pagenumber: number;
-    views: number;
-    downloads: number;
-    uploadedBy: string;
-    status: boolean;
-    sharedBy?: string[];
-    uploadedAt?: string;
-    approvedAt?: Date;
-}
+import type { DocumentType } from '@/types/document';
+
 export default function ManageDocument() {
     const [value, setValue] = React.useState('one');
 
@@ -32,7 +15,7 @@ export default function ManageDocument() {
         setValue(newValue);
     };
 
-    const [downloadDocuments, setDownloadDocuments] = useState<IDocumentItem[]>(
+    const [downloadDocuments, setDownloadDocuments] = useState<DocumentType[]>(
         [],
     );
     const { user } = useUser();
@@ -83,16 +66,7 @@ export default function ManageDocument() {
                         style={{ textTransform: 'none' }}
                         className="text-[16px] text-[#333]"
                     />
-                    {/* <Tab value="three" label="Item Three" /> */}
                 </Tabs>
-                {/* <div>
-                    <TextField
-                        id="outlined-basic"
-                        variant="outlined"
-                        size="small"
-                        placeholder="Tìm kiếm..."
-                    />
-                </div> */}
             </div>
             {/* Render nội dung khác nhau dựa trên tab được chọn */}
             <div className="mt-4">

@@ -7,28 +7,12 @@ import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import SearchResultItem from '@/components/SearchResultItem';
 import CircularProgress from '@mui/material/CircularProgress';
-export interface FilterState {
-    category: string;
-    typeFile: string;
-    subject: string;
-    pageCountRange: string;
-    sort: string;
-}
-
-interface Category {
-    _id: string;
-    name: string;
-}
-
-interface TypeFile {
-    _id: string;
-    name: string;
-}
-
-interface Subject {
-    _id: string;
-    name: string;
-}
+import type {
+    Category,
+    Subject,
+    TypeFile,
+    FilterState,
+} from '@/types/document';
 
 export default function Search() {
     const { slug } = useParams(); // Lấy slug từ dynamic route

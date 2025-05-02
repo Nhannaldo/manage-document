@@ -2,31 +2,15 @@
 import { useState, useEffect } from 'react';
 import DocumentItem from '../DocumentItem';
 import { useUser } from '@/context/UserContext';
-interface IDocumentItem {
-    _id: string;
-    title: string;
-    description?: string;
-    categoryId: string;
-    subjectId: string;
-    fileUrl: string;
-    imageUrl: string;
-    typefileId: string;
-    pagenumber: number;
-    views: number;
-    downloads: number;
-    uploadedBy: string;
-    status: boolean;
-    sharedBy?: string[];
-    uploadedAt?: string;
-    approvedAt?: Date;
-}
+import type { DocumentType } from '@/types/document';
+
 interface TabUploadedDocumentProps {
     statusFilter: string;
 }
 const TabUploadedDocument: React.FC<TabUploadedDocumentProps> = ({
     statusFilter,
 }) => {
-    const [uploadedDocuments, setUploadedDocuments] = useState<IDocumentItem[]>(
+    const [uploadedDocuments, setUploadedDocuments] = useState<DocumentType[]>(
         [],
     );
     const { user } = useUser();

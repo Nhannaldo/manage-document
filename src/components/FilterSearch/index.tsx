@@ -2,28 +2,12 @@
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import React, { useState, useEffect } from 'react';
-
-interface Category {
-    _id: string;
-    name: string;
-}
-interface TypeFile {
-    _id: string;
-    name: string;
-}
-
-interface Subject {
-    _id: string;
-    name: string;
-}
-
-interface FilterState {
-    category: string;
-    typeFile: string;
-    subject: string;
-    pageCountRange: string;
-    sort: string;
-}
+import type {
+    Category,
+    TypeFile,
+    Subject,
+    FilterState,
+} from '@/types/document';
 
 interface FilterSearchProps {
     filter: FilterState;
@@ -33,10 +17,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({ filter, setFilter }) => {
     const [categories, setCategories] = useState<Category[]>([]);
     const [typefiles, setTypeFiles] = useState<TypeFile[]>([]);
     const [subjects, setSubjects] = useState<Subject[]>([]);
-    const [selectedCategory, setSelectedCategory] = useState<string>('');
-    const [selectedTypeFile, setSelectedTypeFile] = useState<string>('');
-    const [selectedSubject, setSelectedSubject] = useState<string>('');
-    const [pageCountRange, setPageCountRange] = useState('');
+
     useEffect(() => {
         async function fetchCategories() {
             try {

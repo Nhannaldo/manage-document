@@ -2,31 +2,14 @@
 import { useState, useEffect } from 'react';
 
 import DocumentItem from '@/components/DocumentItem';
-
-interface IDocumentItem {
-    _id: string;
-    title: string;
-    description?: string;
-    categoryId: string;
-    subjectId: string;
-    fileUrl: string;
-    imageUrl: string;
-    typefileId: string;
-    pagenumber: number;
-    views: number;
-    downloads: number;
-    uploadedBy: string;
-    status: boolean;
-    uploadedAt?: string;
-    approvedAt?: Date;
-    hidden?: boolean;
-}
+import type { DocumentType } from '@/types/document';
 export default function Home() {
-    const [documentviews, setDocumentViews] = useState<IDocumentItem[]>([]);
-    const [documentdownloads, setDocumentdownloads] = useState<IDocumentItem[]>(
+    const [documentviews, setDocumentViews] = useState<DocumentType[]>([]);
+    const [documentdownloads, setDocumentdownloads] = useState<DocumentType[]>(
         [],
     );
-    const [documentnews, setDocumentnews] = useState<IDocumentItem[]>([]);
+    const [documentnews, setDocumentnews] = useState<DocumentType[]>([]);
+
     useEffect(() => {
         const fetchDocuments = async () => {
             try {
@@ -54,7 +37,6 @@ export default function Home() {
                     <h2 className="text-[18px] font-bold text-[#006ec7]">
                         TÀI LIỆU NỔI BẬT TRONG TUẦN
                     </h2>
-                    {/* <span className="text-[#2259a2]">Xem tất cả </span> */}
                 </div>
                 <ul className="grid grid-cols-4 gap-[24px] h-[]">
                     {documentviews.map((item, index) => {
@@ -79,14 +61,12 @@ export default function Home() {
                     <h2 className="text-[18px] font-bold text-[#006ec7]">
                         TÀI LIỆU MỚI ĐĂNG
                     </h2>
-                    {/* <span className="text-[#2259a2]">Xem tất cả </span> */}
                 </div>
                 <ul className="grid grid-cols-4 gap-[24px] h-[]">
                     {documentnews.map((item, index) => {
-                        // Add `hidden` dynamically before passing to the component
                         const itemWithHidden = {
                             ...item,
-                            hidden: true, // Example: hide if views are zero
+                            hidden: true,
                         };
 
                         return (
@@ -104,14 +84,12 @@ export default function Home() {
                     <h2 className="text-[18px] font-bold text-[#006ec7]">
                         TÀI LIỆU XEM NHIỀU NHẤT MỖI TUẦN
                     </h2>
-                    {/* <span className="text-[#2259a2]">Xem tất cả </span> */}
                 </div>
                 <ul className="grid grid-cols-4 gap-[24px] h-[]">
                     {documentdownloads.map((item, index) => {
-                        // Add `hidden` dynamically before passing to the component
                         const itemWithHidden = {
                             ...item,
-                            hidden: true, // Example: hide if views are zero
+                            hidden: true,
                         };
 
                         return (

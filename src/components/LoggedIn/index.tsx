@@ -13,14 +13,8 @@ import NotificationMenu from '../NotificationMenu';
 import AccountMenu from '../AccountMenu';
 import { useUser } from '@/context/UserContext';
 import axios from 'axios';
+import type { Notification } from '@/types/notification';
 
-interface Notification {
-    userId: string;
-    title: string;
-    message: string;
-    createdAt: string;
-    isRead: boolean;
-}
 export default function UserSection() {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [anchorElNoti, setAnchorElNoti] = useState<null | HTMLElement>(null);

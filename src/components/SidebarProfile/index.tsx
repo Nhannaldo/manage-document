@@ -2,7 +2,6 @@
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
-import TopicIcon from '@mui/icons-material/Topic';
 import CollectionsIcon from '@mui/icons-material/Collections';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';

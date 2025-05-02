@@ -1,34 +1,15 @@
 'use client';
 import { useState, useEffect } from 'react';
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
 import FilterCategory from '@/components/FilterCategory';
 import DocumentItem from '@/components/DocumentItem';
 import Pagination from '@mui/material/Pagination';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import CircularProgress from '@mui/material/CircularProgress';
-interface IDocumentItem {
-    _id: string;
-    title: string;
-    description?: string;
-    categoryId: string;
-    subjectId: string;
-    fileUrl: string;
-    imageUrl: string;
-    typefileId: string;
-    pagenumber: number;
-    views: number;
-    downloads: number;
-    uploadedBy: string;
-    status: boolean;
-    uploadedAt?: string;
-    approvedAt?: Date;
-    hidden?: boolean;
-}
+import type { DocumentType } from '@/types/document';
 
 export default function Document() {
-    const [documents, setDocuments] = useState<IDocumentItem[]>([]);
+    const [documents, setDocuments] = useState<DocumentType[]>([]);
     const [sortBy, setSortBy] = useState('newest');
     const [fileType, setFileType] = useState('');
     const [pageCountRange, setPageCountRange] = useState('');
@@ -86,22 +67,6 @@ export default function Document() {
     return (
         <div className="max-w-[1280px] mx-auto grid grid-cols-12 mt-4 gap-8 px-2">
             <div className="col-span-12">
-                {/* <section>
-                    <ol className="flex items-center text-gray-500 text-[15px]">
-                        <li>
-                            <HomeOutlinedIcon className="relative bottom-[2px]" />
-                            <a href="">Trang chủ</a>
-                        </li>
-                        <li>
-                            <NavigateNextOutlinedIcon />
-                            <a href="">Công nghệ thông tin</a>
-                        </li>
-                        <li>
-                            <NavigateNextOutlinedIcon />
-                            <a href="">Kỹ thuật lập trình</a>
-                        </li>
-                    </ol>
-                </section> */}
                 <h1 className="h-[70px] bg-[#2a65aa] text-white leading-[70px] text-center text-[22px] font-[500] mt-1 mb-4">
                     Thư viện Luận văn & Đề tài
                 </h1>

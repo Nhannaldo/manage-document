@@ -1,28 +1,11 @@
 'use client';
 import { useState, useEffect } from 'react';
-import TextField from '@mui/material/TextField';
 import DocumentItem from '@/components/DocumentItem';
 import { useUser } from '@/context/UserContext';
+import type { DocumentType } from '@/types/document';
 
-interface IDocumentItem {
-    _id: string;
-    title: string;
-    description?: string;
-    categoryId: string;
-    subjectId: string;
-    fileUrl: string;
-    imageUrl: string;
-    typefileId: string;
-    pagenumber: number;
-    views: number;
-    downloads: number;
-    uploadedBy: string;
-    status: boolean;
-    uploadedAt?: string;
-    approvedAt?: Date;
-}
 export default function Like() {
-    const [favoriteDocuments, setFavoriteDocuments] = useState<IDocumentItem[]>(
+    const [favoriteDocuments, setFavoriteDocuments] = useState<DocumentType[]>(
         [],
     );
     const { user } = useUser();
@@ -50,18 +33,6 @@ export default function Like() {
             <div className="border-b border-gray-200 pb-3">
                 <h2 className="text-[24px]">Quản lý yêu thích</h2>
             </div>
-            {/* <div className="flex items-center justify-between mt-3">
-                <div>
-                    <TextField
-                        id="outlined-basic"
-                        variant="outlined"
-                        size="small"
-                        placeholder="Tìm kiếm..."
-                        className="w-[400px]"
-                    />
-                </div>
-            </div> */}
-            {/* <div className="mt-3">Hiện chưa có tài liệu yêu thích</div> */}
             <div>
                 {/* Document List */}
                 <ul className="grid grid-cols-4 gap-3 mt-4">

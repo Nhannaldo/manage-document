@@ -7,6 +7,7 @@ interface IDocSearchItem {
     };
     onClick: () => void;
 }
+
 export default function DocumentSearchItem({
     result,
     onClick,

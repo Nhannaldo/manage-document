@@ -6,8 +6,6 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import Image from 'next/image';
-import googlelogo from '/assets/images/img-google.png';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/context/UserContext';
 import Cookies from 'js-cookie';

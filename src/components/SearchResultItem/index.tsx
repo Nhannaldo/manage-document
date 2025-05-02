@@ -1,20 +1,8 @@
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
+import type { SearchResultItemProps } from '@/types/document';
 
-interface SearchResultItemProps {
-    result: {
-        _id: string;
-        title: string;
-        description: string;
-        fileType: string; // e.g., PDF, DOC, etc.
-        uploadedAt: string;
-        views: number;
-        downloads: number;
-        pagenumber: number;
-        imageUrl: string; // Thumbnail URL for document preview
-    };
-}
 export default function SearchResultItem({ result }: SearchResultItemProps) {
     return (
         <div

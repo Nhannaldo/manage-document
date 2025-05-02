@@ -1,24 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import DoneIcon from '@mui/icons-material/Done';
 import CircularProgress from '@mui/material/CircularProgress';
-interface Question {
-    _id: string;
-    question: string;
-    answers: string[];
-    correctAnswer: number;
-}
-interface Subject {
-    _id: string;
-    name: string;
-    subject: string;
-}
-interface Exam {
-    _id: string;
-    subjectId: Subject;
-    questions: Question[];
-}
+import type { Question, Subject, Exam } from '@/types/exam';
 
 export default function ExamSubjectPage() {
     const { id } = useParams();

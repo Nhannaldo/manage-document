@@ -1,14 +1,11 @@
 'use client';
 import { useParams } from 'next/navigation';
 import { useAlert } from '@/context/AlertContext';
-// import pdf from 'pdf-parse';
 import {
     getDocument,
     GlobalWorkerOptions,
 } from 'pdfjs-dist/legacy/build/pdf.mjs';
 import { useEffect, useState } from 'react';
-import textract from 'textract';
-
 import { useUser } from '@/context/UserContext';
 import CloseIcon from '@mui/icons-material/Close';
 import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
@@ -25,27 +22,10 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
+import type { DocumentType } from '@/types/document';
 
 GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
 
-interface IDocumentPropItemDetail {
-    _id: string;
-    title: string;
-    description?: string;
-    categoryId: string;
-    subjectId: string;
-    fileUrl: string;
-    imageUrl: string;
-    typefileId: string;
-    pagenumber: number;
-    views: number;
-    downloads: number;
-    uploadedBy: string;
-    status: boolean;
-    uploadedAt?: string;
-    approvedAt?: Date;
-    hidden?: boolean;
-}
 export default function DocumentDetail() {
     const { showAlert } = useAlert();
     const { id } = useParams();
@@ -172,8 +152,9 @@ export default function DocumentDetail() {
         }
     };
 
-    const [documentDetails, setDocumentDetails] =
-        useState<IDocumentPropItemDetail | null>(null);
+    const [documentDetails, setDocumentDetails] = useState<DocumentType | null>(
+        null,
+    );
     const [fileText, setFileText] = useState('');
 
     useEffect(() => {

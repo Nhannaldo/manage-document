@@ -3,7 +3,6 @@ import { useState } from 'react';
 
 type Category = {
     name: string;
-    count: number;
     checked: boolean;
 };
 

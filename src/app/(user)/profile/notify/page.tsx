@@ -5,13 +5,8 @@ import { useUser } from '@/context/UserContext';
 import { Menu, MenuItem, Avatar } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import CircleIcon from '@mui/icons-material/Circle';
-interface Notification {
-    userId: string;
-    title: string;
-    message: string;
-    createdAt: string;
-    isRead: boolean;
-}
+import type { Notification } from '@/types/notification';
+
 export default function Notify() {
     const { user } = useUser();
 
