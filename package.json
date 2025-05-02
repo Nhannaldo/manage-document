@@ -15,7 +15,6 @@
         "@emotion/styled": "^11.13.0",
         "@mui/icons-material": "^6.1.2",
         "@mui/material": "^6.1.2",
-        "@mui/material-nextjs": "^5.16.6",
         "@tippyjs/react": "^4.2.6",
         "@toolpad/core": "^0.7.0",
         "axios": "^1.7.7",
