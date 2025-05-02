@@ -39,7 +39,7 @@ export default function Information() {
 
         try {
             const response = await fetch(
-                `http://localhost:3001/users/update-profile/${user._id}`,
+                `${process.env.NEXT_PUBLIC_API_URL}/users/update-profile/${user._id}`,
                 {
                     method: 'PUT',
                     headers: {

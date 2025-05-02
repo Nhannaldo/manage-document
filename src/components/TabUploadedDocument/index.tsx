@@ -35,7 +35,7 @@ const TabUploadedDocument: React.FC<TabUploadedDocumentProps> = ({
         const fetchUploadedDocument = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:3001/documents/get-all-document-upload/${user?._id}?status=${statusFilter}`,
+                    `${process.env.NEXT_PUBLIC_API_URL}/documents/get-all-document-upload/${user?._id}?status=${statusFilter}`,
                 );
                 if (!response.ok) {
                     throw new Error('Error fetching documents');

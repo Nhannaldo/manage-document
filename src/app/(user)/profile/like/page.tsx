@@ -30,7 +30,7 @@ export default function Like() {
     useEffect(() => {
         const fetchFavoriteDocuments = async () => {
             const response = await fetch(
-                `http://localhost:3001/favorite/get-all-document-favorite/${user?._id}`,
+                `${process.env.NEXT_PUBLIC_API_URL}/favorite/get-all-document-favorite/${user?._id}`,
             );
             if (!response.ok) {
                 throw new Error('Failed to fetch favorite documents');

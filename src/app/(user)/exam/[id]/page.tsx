@@ -45,7 +45,7 @@ export default function ExamSubjectPage() {
             setLoading(true);
             try {
                 const response = await fetch(
-                    `http://localhost:3001/exams/get-exam/${id}`,
+                    `${process.env.NEXT_PUBLIC_API_URL}/exams/get-exam/${id}`,
                 ); // Thay bằng API thực tế của bạn
                 const data = await response.json();
                 setSubject(data.subjectId);

@@ -63,7 +63,7 @@ export default function Document() {
                 }).toString();
 
                 const response = await fetch(
-                    `http://localhost:3001/documents/filterlesson?${query}`,
+                    `${process.env.NEXT_PUBLIC_API_URL}/documents/filterlesson?${query}`,
                 );
                 if (!response.ok) {
                     throw new Error('Error fetching documents');

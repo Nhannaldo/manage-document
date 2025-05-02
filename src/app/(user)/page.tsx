@@ -31,7 +31,7 @@ export default function Home() {
         const fetchDocuments = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:3001/documents/top-documents`,
+                    `${process.env.NEXT_PUBLIC_API_URL}/documents/top-documents`,
                 );
                 if (!response.ok) {
                     throw new Error('Error fetching documents');

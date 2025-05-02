@@ -24,10 +24,13 @@ const AccountMenu: React.FC<AccountMenuProps> = ({
 
     const handleLogout = async () => {
         try {
-            const response = await fetch('http://localhost:3001/auth/logout', {
-                method: 'POST',
-                credentials: 'include', // Quan trọng để gửi cookie cùng với yêu cầu
-            });
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`,
+                {
+                    method: 'POST',
+                    credentials: 'include', // Quan trọng để gửi cookie cùng với yêu cầu
+                },
+            );
 
             if (response.ok) {
                 // Điều hướng người dùng về trang đăng nhập sau khi đăng xuất thành công

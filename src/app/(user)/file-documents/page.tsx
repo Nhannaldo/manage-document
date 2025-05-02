@@ -49,6 +49,7 @@ export default function Document() {
     const handlePageChange = (_: React.ChangeEvent<unknown>, page: number) => {
         setCurrentPage(page);
     };
+
     useEffect(() => {
         const fetchFilteredDocuments = async () => {
             setLoading(true);
@@ -63,7 +64,7 @@ export default function Document() {
                 }).toString();
 
                 const response = await fetch(
-                    `http://localhost:3001/documents/filter?${query}`,
+                    `${process.env.NEXT_PUBLIC_API_URL}/documents/filter?${query}`,
                 );
                 if (!response.ok) {
                     throw new Error('Error fetching documents');

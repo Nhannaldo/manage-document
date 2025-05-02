@@ -35,7 +35,7 @@ export default function SearchHeader() {
         const fetchSearchDocuments = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:3001/documents/search?q=${encodeURIComponent(
+                    `${process.env.NEXT_PUBLIC_API_URL}/documents/search?q=${encodeURIComponent(
                         debouncedValue,
                     )}`,
                 );

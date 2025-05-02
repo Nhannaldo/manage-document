@@ -62,7 +62,7 @@ export default function Document() {
                 }).toString();
 
                 const response = await fetch(
-                    `http://localhost:3001/documents/filtertopic?${query}`,
+                    `${process.env.NEXT_PUBLIC_API_URL}/documents/filtertopic?${query}`,
                 );
                 if (!response.ok) {
                     throw new Error('Error fetching documents');

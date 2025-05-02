@@ -41,7 +41,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({ filter, setFilter }) => {
         async function fetchCategories() {
             try {
                 const response = await fetch(
-                    'http://localhost:3001/category/get-all-category',
+                    `${process.env.NEXT_PUBLIC_API_URL}/category/get-all-category`,
                 ); // Replace with your actual API endpoint
                 const data = await response.json();
                 setCategories(data); // Store categories in state
@@ -52,7 +52,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({ filter, setFilter }) => {
         async function fetchTypefiles() {
             try {
                 const response = await fetch(
-                    'http://localhost:3001/typefile/get-all-typefile',
+                    `${process.env.NEXT_PUBLIC_API_URL}/typefile/get-all-typefile`,
                 ); // Replace with your actual API endpoint
                 const data = await response.json();
                 setTypeFiles(data); // Store categories in state
@@ -63,7 +63,7 @@ const FilterSearch: React.FC<FilterSearchProps> = ({ filter, setFilter }) => {
         async function fetchSubjects() {
             try {
                 const response = await fetch(
-                    'http://localhost:3001/subject/get-all-subject',
+                    `${process.env.NEXT_PUBLIC_API_URL}/subject/get-all-subject`,
                 ); // Replace with your actual API endpoint
                 const data = await response.json();
                 setSubjects(data); // Store categories in state

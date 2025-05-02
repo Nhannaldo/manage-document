@@ -40,7 +40,7 @@ export default function ManageDocument() {
     useEffect(() => {
         const fetchDownloadDocuments = async () => {
             const response = await fetch(
-                `http://localhost:3001/download/get-all-document-download/${user?._id}`,
+                `${process.env.NEXT_PUBLIC_API_URL}/download/get-all-document-download/${user?._id}`,
             );
             if (!response.ok) {
                 throw new Error('Failed to fetch download documents');

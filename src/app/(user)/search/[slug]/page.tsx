@@ -67,7 +67,7 @@ export default function Search() {
         async function fetchCategories() {
             try {
                 const response = await fetch(
-                    'http://localhost:3001/category/get-all-category',
+                    `${process.env.NEXT_PUBLIC_API_URL}/category/get-all-category`,
                 );
                 const data = await response.json();
                 setCategories(data);
@@ -79,7 +79,7 @@ export default function Search() {
         async function fetchTypefiles() {
             try {
                 const response = await fetch(
-                    'http://localhost:3001/typefile/get-all-typefile',
+                    `${process.env.NEXT_PUBLIC_API_URL}/typefile/get-all-typefile`,
                 );
                 const data = await response.json();
                 setTypeFiles(data);
@@ -91,7 +91,7 @@ export default function Search() {
         async function fetchSubjects() {
             try {
                 const response = await fetch(
-                    'http://localhost:3001/subject/get-all-subject',
+                    `${process.env.NEXT_PUBLIC_API_URL}/subject/get-all-subject`,
                 );
                 const data = await response.json();
                 setSubjects(data);
@@ -111,7 +111,7 @@ export default function Search() {
                 setLoading(true);
                 try {
                     const response = await fetch(
-                        `http://localhost:3001/documents/search?q=${slug}&category=${filter.category}&typeFile=${filter.typeFile}&subject=${filter.subject}&pageCountRange=${filter.pageCountRange}&sort=${filter.sort}`,
+                        `${process.env.NEXT_PUBLIC_API_URL}/documents/search?q=${slug}&category=${filter.category}&typeFile=${filter.typeFile}&subject=${filter.subject}&pageCountRange=${filter.pageCountRange}&sort=${filter.sort}`,
                     );
                     if (!response.ok) {
                         throw new Error('Error fetching search results');

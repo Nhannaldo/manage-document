@@ -31,14 +31,17 @@ export default function Login() {
         event.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:3001/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password }),
+                    credentials: 'include', // Đảm bảo cookies được gửi cùng request
                 },
-                body: JSON.stringify({ email, password }),
-                credentials: 'include', // Đảm bảo cookies được gửi cùng request
-            });
+            );
 
             const data = await response.json();
 

@@ -50,7 +50,7 @@ export default function Register() {
         try {
             // Gửi yêu cầu tới API /api/register
             const response = await fetch(
-                'http://localhost:3001/auth/register',
+                `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
                 {
                     method: 'POST',
                     headers: {

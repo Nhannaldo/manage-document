@@ -83,7 +83,7 @@ export default function DocumentDetail() {
             };
 
             const response = await fetch(
-                'http://localhost:3001/report/create-new-report',
+                `${process.env.NEXT_PUBLIC_API_URL}/report/create-new-report`,
                 {
                     method: 'POST',
                     headers: {
@@ -149,7 +149,7 @@ export default function DocumentDetail() {
     const increaseViewCount = async () => {
         try {
             const response = await fetch(
-                'http://localhost:3001/documents/increase-view',
+                `${process.env.NEXT_PUBLIC_API_URL}/documents/increase-view`,
                 {
                     method: 'POST',
                     headers: {
@@ -180,7 +180,7 @@ export default function DocumentDetail() {
         const fetchDocument = async () => {
             if (id) {
                 const response = await fetch(
-                    `http://localhost:3001/documents/detail/${id}`,
+                    `${process.env.NEXT_PUBLIC_API_URL}/documents/detail/${id}`,
                 );
                 if (!response.ok) {
                     return; // Early return on error
@@ -237,7 +237,7 @@ export default function DocumentDetail() {
     const handleDownloadFile = async () => {
         try {
             const response = await fetch(
-                'http://localhost:3001/download/create-new-download',
+                `${process.env.NEXT_PUBLIC_API_URL}/download/create-new-download`,
                 {
                     method: 'POST',
                     headers: {
@@ -279,7 +279,7 @@ export default function DocumentDetail() {
     const handleAddFavorite = async () => {
         try {
             const response = await fetch(
-                'http://localhost:3001/favorite/create-new-favorite',
+                `${process.env.NEXT_PUBLIC_API_URL}/favorite/create-new-favorite`,
                 {
                     method: 'POST',
                     headers: {

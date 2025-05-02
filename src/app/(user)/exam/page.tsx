@@ -30,7 +30,7 @@ export default function Exam() {
         async function fetchSubjects() {
             try {
                 const response = await fetch(
-                    'http://localhost:3001/subject/get-all-subject',
+                    `${process.env.NEXT_PUBLIC_API_URL}/subject/get-all-subject`,
                 ); // Thay bằng API thực tế của bạn
                 const data = await response.json();
                 setSubjects(data);
@@ -46,7 +46,7 @@ export default function Exam() {
             setLoading(true);
             try {
                 const response = await fetch(
-                    `http://localhost:3001/exams/get-all-exam-subject/${selectedSubject}`,
+                    `${process.env.NEXT_PUBLIC_API_URL}/exams/get-all-exam-subject/${selectedSubject}`,
                 );
                 const data = await response.json();
                 setExams(data); // Lưu dữ liệu đề thi vào state

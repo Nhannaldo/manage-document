@@ -19,7 +19,9 @@ export default function Notify() {
 
     const startLongPolling = () => {
         axios
-            .get(`http://localhost:3001/notification/long-polling/${user?._id}`)
+            .get(
+                `${process.env.NEXT_PUBLIC_API_URL}/notification/long-polling/${user?._id}`,
+            )
             .then((response) => {
                 // Thêm thông báo mới vào state
                 setNotifications((prevNotifications) => [
@@ -37,7 +39,7 @@ export default function Notify() {
         // Lấy danh sách thông báo khi component được mount
         axios
             .get(
-                `http://localhost:3001/notification/get-all-notification/${user?._id}`,
+                `${process.env.NEXT_PUBLIC_API_URL}/notification/get-all-notification/${user?._id}`,
             )
             .then((response) => {
                 setNotifications(response.data);
